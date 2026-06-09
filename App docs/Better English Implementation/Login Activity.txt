@@ -1,0 +1,32 @@
+## Login Activity
+
+This screen collects the username and password from the user and submits them to the server. The server then responds with the full details of the authenticated user.
+
+**Key Behavior:**
+This activity, along with the button that triggers it, will be hidden on any client device that already has the designated key stored in the Android Keystore. This is because such a device is pre-configured exclusively for customers placing orders, meaning authentication is not required.
+
+When the app launches, it checks for the presence of the key and validates it with the server. If the server confirms the key is valid, the Login Button and the Login UI will not be rendered.
+
+Based on the server's response regarding the user's role, the app will display the appropriate action buttons and navigate to the relevant screens accordingly.
+
+---
+
+## Password & Key Management Activity
+
+This screen is designed for creating a password that is stored both on the server and in the Android Keystore. It is exclusively accessible to the registered user with the role of **BOSS**, as it handles critical security features of the application.
+
+**User Management:**
+This screen also provides the CRUD operations for managing users with the role of **Manager**, giving the Boss full control over their managers.
+
+**Customer Order Key:**
+This screen allows the Boss to register a key that will be attached as a header in every request made when a customer taps the **Submit Order** button. This key is stored on the server in an encrypted form (using `BCryptPasswordEncoder` on the server side) and stored in its raw form in the Android Keystore on the client side.
+
+**Key Rules:**
+- The key is **immutable** — it can only be created once.
+- If the key already exists, it will be displayed on this screen. If not, a label will indicate that no key has been created for Customer Ordering yet.
+- The key can be **deleted** but **not updated**.
+
+**Purpose of the Key:**
+Customer order requests are not secured by credentials — they are permit-all requests, meaning customers do not need to log in to place an order. Instead, the key is passed in the request header so the server can verify that the request is coming from an authorized client device.
+
+The Boss is responsible for manually inserting this key into the specific devices that are permitted to make requests to the server.
