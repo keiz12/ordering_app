@@ -1,0 +1,5 @@
+- what is shown when no log in is handled yet?
+
+- Left on section : High level system flow. UI rendering CRUD operation of products. Update
+
+- Check next sections, they might be somethings missin

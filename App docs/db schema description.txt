@@ -1,0 +1,122 @@
+ System is a Mobile Ordering App
+
+Goal
+-------
+
+- System showing restaurant products to customers so that they make an order
+
+- Customer makes an order.
+
+- System will show in real time customers who have made orders.
+
+- A notification is to be sent to the wait staff so that the order is processed.
+
+- As a waiter/waitress takes an order then he/she will mark that the order taken and the order will be marked taken on the UI, alongside the waitress/waiter who has taken that order.
+
+- System will give recommendations on products that are sold a lot and products that are not sold a lot.
+	
+	* This will be done on a daily, monthly and all time basis. [It will use statistic graphs and plain text explanations]
+
+- System will show cash entered on each day, each month and all time basis. [It will use statistic graphs and plain text explanations]
+
+- System will show the number of customer orders that the waiter/waitress has served.
+
+	* This will be done on a daily, monthly and all time basis. [It will use statistic graphs and plain text explanations]
+
+Database
+-----------
+
+- To store users information.
+
+- To store authorization roles.
+
+- To store product information.
+
+- To store orders that customers has made.
+
+- To store orders that has failed. (not done)
+
+- To store wait staff (waiter/waitress) processed order.
+
+- To store customer feedback.
+
+
+Database Table Fields
+-----------------------
+
+- Authorization Roles (ROLE && userID)
+
+* BOSS && associated ID
+
+* MANAGER && associated ID
+
+* WAITER Or WAITRESS (u can find and suggest for me a fitting combination name)  && associated ID
+
+* CUSTOMER (anonymous/unauthenticated user)  && associated ID
+
+
+- User:
+
+* ID
+
+* Username
+
+* Password
+
+* Role
+
+
+- Product:
+
+* ID
+
+* Containing a path in the computer that shows the product image(s). [1 to many], example Apples will have folder called Apples and in that folder they will be Apple Images.
+
+	- If I add an image to that folder and add this path to the database, then I'll be able to see those images rendering on the UI.
+
+* Product Name
+
+* Product description
+
+* Product Price
+
+
+- Order:
+
+* Order ID
+
+* Order UUID
+
+* 1 to many products [foreign key  to order products]
+
+* Table number
+
+* The time this order was made. Using LocalDateTime of Rwanda/Kigali
+
+
+- Order Products
+
+* Order ID [foreign key  to order] UPDATE CASCADE DELETE CASCADE
+
+* Product ID [foreign key  to product] UPDATE CASCADE DELETE CASCADE
+
+
+- Waiter or Waitress processed order
+
+* Waiter or Waitress ID [foreign key  to user] UPDATE CASCADE DELETE CASCADE
+
+* Order ID [foreign key  to order] UPDATE CASCADE DELETE CASCADE 
+
+
+- Waiter or Waitress failed processing order 
+
+* Waiter or Waitress ID [foreign key  to user] UPDATE CASCADE DELETE CASCADE
+
+* Order ID [foreign key  to order] UPDATE CASCADE DELETE CASCADE 
+
+
+- Customer Feedback:
+
+* Feedback
+ 
+----> Analyze this document and see if u can add up something, before adding it ask me for it confirmation
