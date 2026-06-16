@@ -1,0 +1,76 @@
+package com.example.orderingapp.login;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.example.orderingapp.R;
+import com.example.orderingapp.connection.webSocket.WebSocketConnection;
+import com.example.orderingapp.home.HomeActivity;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class LoginActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.login_activity);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login_activity), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        setListeners();
+    }
+
+
+
+    private void setListeners () {
+        setLoginButtonListener();
+    }
+
+    private void setLoginButtonListener () {
+        MaterialButton loginButton = findViewById(R.id.btn_login);
+        loginButton.setOnClickListener(l -> loginButtonClicked());
+    }
+
+    public void loginButtonClicked () {
+
+        TextInputEditText username = findViewById( R.id.username_input );
+
+        TextInputEditText password = findViewById(R.id.password_input);
+
+        System.out.println(username.getText());
+        System.out.println(password.getText());
+
+//        serverSideLoginCall ()
+        showHomeActivity();
+    }
+
+
+    private boolean serverSideLoginCall () {
+        return true;
+    }
+
+    private void showHomeActivity () {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+
+}

@@ -1,0 +1,11 @@
+To know about 
+
+Waiter/waitress == staff
+
+D:\Desktop\Ordering App Server\orderingappserver\orderingapp\downloads
+
+Till now the server works as a one restaurant ordering app, till the time the boss will be delegated to certain managers and managers to certain staff
+
+The android key is also designed to be 1 only.
+
+

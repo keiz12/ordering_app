@@ -88,6 +88,9 @@ This key is crucial because when customers make order request using the desired 
 So this key will be inserted by the BOSS in specific devices that are allowed to make request to the server.
 
 
+
+
+
 - UI rendering CRUD operation of products, the button triggering to this activity as well as this activity are to be shown if user is logged in and has ROLE of being either a Boss or a Manager.
 
 	* The product creation will require a non null name, non null price, non null description and non null pictures.
@@ -106,6 +109,8 @@ This activity will show the products in a way they are shown on the customer ord
 
 So u get that each product will have update button that will render the activity to update the product [which include product picture deletes, but should no be left null or folder empty],
 and each product will be having a delete option for deleting it as well.
+
+
 
 - UI rendering products so that user can submit order, the activity is only rendered when the client has in it the desired 'key' saved by the boss in the Android Key Store. 
 
@@ -146,7 +151,7 @@ after they have logged in.
 
 	* As server receives the customer's order, it will save this order in the database and then it'll notify the clients that render this activity, through a web socket. The notification from the server will make clients append this order. Like the way a chatting app receives server web socket call to render a chat.
 
-	* This activity will simply display a table showing these columns, here are column titles: Order Number, Order UUID, Order Products, Order Total Price, Order Table [the table customers are sit on], Order is paid, Order Taken By, Take Order.
+	* This activity will simply display a table showing these columns, here are column titles: Order Number, Order UUID, Order created at, Order Products, Order Total Price, Order Table [the table customers are sit on], Order is paid, Order Taken By, Order processed at, Take Order.
 
 The table mentioned above isn't an all time table, it's a daily table. It means this activity has a sliding side panel that has today's dates, previous days dates ... where a user will click on a date and it'll render the table showing all data in the columns discussed above.
 

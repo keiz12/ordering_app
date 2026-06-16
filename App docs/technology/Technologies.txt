@@ -1,0 +1,10 @@
+Technologies
+----------------
+
+- Frontend: XML powered and event handled by Java
+
+- Backend: Spring Boot, Spring MVC, JDBCTemplate, Spring Security (HTTP Basics)
+
+- Database: MySQL, url: jdbc:mysql://localhost:3306/ordering_app
+
+----> Analyze this document and see if u can add up something, before adding it ask me for it confirmation

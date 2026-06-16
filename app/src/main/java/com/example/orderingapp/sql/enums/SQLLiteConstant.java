@@ -1,0 +1,7 @@
+package com.example.orderingapp.sql.enums;
+
+public enum SQLLiteConstant {
+    RECORD_EXISTS, RECORD_NOT_EXISTS,
+    RECORD_CREATE_SUCCESSFULLY, RECORD_CREATE_FAILED,
+    RECORD_DELETE_SUCCESSFULLY, RECORD_DELETE_FAILED
+}

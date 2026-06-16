@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manage_product_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F6F8">
+
+    <!-- Premium Background -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/primary_gradient" />
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:clipToPadding="false"
+        android:paddingTop="20dp"
+        android:paddingBottom="40dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/hsv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                app:flexDirection="row"
+                app:flexWrap="wrap"
+                app:justifyContent="center">
+
+                <!-- Add New Product Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/add_employee"
+                    android:layout_width="160dp"
+                    android:layout_height="180dp"
+                    android:layout_margin="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="6dp"
+                    app:strokeWidth="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="12dp"
+                            android:background="#E8F5E9"
+                            android:padding="14dp"
+                            android:src="@android:drawable/ic_menu_add"
+                            app:shapeAppearanceOverlay="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:tint="#4CAF50" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="12dp"
+                            android:gravity="center"
+                            android:text="Add New\nProduct"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Product Catalog Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_manage_api_key"
+                    android:layout_width="160dp"
+                    android:layout_height="180dp"
+                    android:layout_margin="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="6dp"
+                    app:strokeWidth="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="12dp"
+                            android:background="#E1F5FE"
+                            android:padding="14dp"
+                            android:src="@android:drawable/ic_menu_gallery"
+                            app:shapeAppearanceOverlay="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:tint="@color/primary_color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="12dp"
+                            android:gravity="center"
+                            android:text="View\nProducts"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

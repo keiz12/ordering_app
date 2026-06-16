@@ -1,0 +1,6 @@
+<resources>
+      <dimen name="fab_margin">16dp</dimen>
+      <dimen name="home_material_card_width">150</dimen>
+      <dimen name="home_material_card_height">150</dimen>
+      <dimen name="home_material_card_margin">16</dimen>
+   </resources>

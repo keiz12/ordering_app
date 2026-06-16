@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- stretchColumns="*" ensures columns expand evenly to fill the screen -->
+    <TableLayout
+        android:id="@+id/table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:background="#CCCCCC"
+        android:showDividers="middle"
+        android:divider="?android:attr/listDivider"
+        android:backgroundTint="@color/white">
+
+        <!-- ==================== HEADER ROW ==================== -->
+        <TableRow
+            android:id="@+id/tableHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_color"
+            android:padding="12dp">
+
+            <TextView
+                android:text="ID"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:text="Product Name"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+
+            <Button
+                android:text="Price"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:backgroundTint="@color/black"/>
+
+            <TextView
+                android:text="Price"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+               />
+
+
+        </TableRow>
+
+<!--        &lt;!&ndash; ==================== DATA ROW 1 ==================== &ndash;&gt;-->
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#FFFFFF"-->
+<!--            android:padding="12dp">-->
+
+<!--            <TextView-->
+<!--                android:text="#101"-->
+<!--                android:textColor="#333333"-->
+<!--                android:textSize="14sp" />-->
+
+<!--            <TextView-->
+<!--                android:text="Wireless Mouse"-->
+<!--                android:textColor="#333333"-->
+<!--                android:textSize="14sp" />-->
+
+<!--            <TextView-->
+<!--                android:text="$25.00"-->
+<!--                android:textColor="#333333"-->
+<!--                android:textSize="14sp"-->
+<!--                android:gravity="end" />-->
+<!--        </TableRow>-->
+
+<!--        &lt;!&ndash; ==================== DATA ROW 2 ==================== &ndash;&gt;-->
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#F9F9F9"-->
+<!--            android:padding="12dp">-->
+
+<!--            <TextView-->
+<!--                android:text="#102"-->
+<!--                android:textColor="#333333"-->
+<!--                android:textSize="14sp" />-->
+
+<!--            <TextView-->
+<!--                android:text="Mechanical Keyboard"-->
+<!--                android:textColor="#333333"-->
+<!--                android:textSize="14sp" />-->
+
+<!--            <TextView-->
+<!--                android:text="$89.99"-->
+<!--                android:textColor="#333333"-->
+<!--                android:textSize="14sp"-->
+<!--                android:gravity="end" />-->
+<!--        </TableRow>-->
+
+    </TableLayout>
+
+</RelativeLayout>

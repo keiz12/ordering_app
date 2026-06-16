@@ -1,0 +1,74 @@
+endpoints
+
+User 
+
+http://localhost:8080/secure/boss/create/user
+
+http://localhost:8080/secure/user (POST, GET, PUT)
+
+
+
+Product
+
+http://localhost:8080/secure/product (POST, GET[all], PUT)
+
+http://localhost:8080/all/product (GET[all])
+
+http://localhost:8080/all/product/{productName} (GET Product)
+
+http://localhost:8080/secure/product/test
+
+http://localhost:8080/secure/product/insert/images
+
+
+
+Order
+
+http://localhost:8080/all/orders (POST, PUT, DELETE) // with api key
+
+http://localhost:8080/secure/boss/order/delete
+
+// find all orders
+
+
+Staff Processed Order
+
+http://localhost:8080/staff-orders/{orderUuid} (POST)
+
+http://localhost:8080/staff-orders/by-date //  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+
+ex: (/orders/by-date?date=2026-06-12)
+
+http://localhost:8080/staff-orders/order-payment/{orderUuid} 
+
+
+
+
+
+Staff Failed Orders
+
+http://localhost:8080/staff-failed-orders (POST, GET, DELETE)
+
+http://localhost:8080/staff-failed-orders/orderUUID
+
+
+
+
+Android key
+
+http://localhost:8080/secure/boss/android/key/validate
+
+http://localhost:8080/secure/boss/android/key (POST, DELETE)
+
+http://localhost:8080/secure/boss/android/key/test
+
+
+
+
+Test
+
+http://localhost:8080/all/get/test
+
+http://localhost:8080/secure/get/test
+
+

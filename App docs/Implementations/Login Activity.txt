@@ -1,3 +1,5 @@
+
+
 ## Login Activity
 
 This screen collects the username and password from the user and submits them to the server. The server then responds with the full details of the authenticated user.

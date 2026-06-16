@@ -34,9 +34,9 @@ Database
 
 - To store orders that customers has made.
 
-- To store orders that has failed. (not done)
-
 - To store wait staff (waiter/waitress) processed order.
+
+- To store orders that has failed. (not done)
 
 - To store customer feedback.
 
@@ -91,6 +91,8 @@ Database Table Fields
 
 * Table number
 
+* Order paid (TINYINT)
+
 * The time this order was made. Using LocalDateTime of Rwanda/Kigali
 
 
@@ -102,6 +104,13 @@ Database Table Fields
 
 
 - Waiter or Waitress processed order
+
+* Waiter or Waitress ID [foreign key  to user] UPDATE CASCADE DELETE CASCADE
+
+* Order ID [foreign key  to order] UPDATE CASCADE DELETE CASCADE 
+
+
+- Waiter or Waitress failed processed order
 
 * Waiter or Waitress ID [foreign key  to user] UPDATE CASCADE DELETE CASCADE
 
