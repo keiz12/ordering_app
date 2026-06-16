@@ -5,16 +5,17 @@ USER
 
 
 [
- {
-    "username": "benjamin",
-    "password": "Ben@2026",
-    "role": "MANAGER"
-  },
 
   {
     "username": "boss_user",
     "password": "Boss@123",
     "role": "BOSS"
+  },
+
+ {
+    "username": "benjamin",
+    "password": "Ben@2026",
+    "role": "MANAGER"
   },
   {
     "username": "manager_jane",
@@ -281,9 +282,202 @@ update
 }
 
 
+Order
+---------
+
+POST CreateOrderRequest
+-------------------------
+
+1.
+{
+  "tableNumber": 1,
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "orderedProducts": [
+    {
+      "productDTO": {
+        "id": 6,
+        "name": "Margherita Pizza",
+        "description": "Classic cheese pizza with tomato sauce",
+        "price": 8.99,
+        "imagePaths": []
+      },
+      "productNum": 2
+    },
+    {
+      "productDTO": {
+        "id": 7,
+        "name": "Caesar Salad",
+        "description": "Crisp romaine with Caesar dressing",
+        "price": 5.49,
+        "imagePaths": []
+      },
+      "productNum": 1
+    }
+  ],
+  "apiKey": "991"
+}
+
+2.
+{
+  "tableNumber": 4,
+  "uuid": "550e8400-e29b-41d4-a716-446655440001",
+  "orderedProducts": [
+    {
+      "productDTO": {
+        "id": 8,
+        "name": "Spaghetti Carbonara",
+        "description": "Pasta with pancetta and parmesan",
+        "price": 12.5,
+        "imagePaths": []
+      },
+      "productNum": 3
+    }
+  ],
+  "apiKey": "911"
+}
+
+3.
+{
+  "tableNumber": 7,
+  "uuid": "550e8400-e29b-41d4-a716-446655440002",
+  "orderedProducts": [
+    {
+      "productDTO": {
+        "id": 9,
+        "name": "Chicken Wings",
+        "description": null,
+        "price": 6.99,
+        "imagePaths": []
+      },
+      "productNum": 1
+    },
+    {
+      "productDTO": {
+        "id": 10,
+        "name": "French Fries",
+        "description": null,
+        "price": 3.5,
+        "imagePaths": []
+      },
+      "productNum": 1
+    },
+    {
+      "productDTO": {
+        "id": 11,
+        "name": "Cola",
+        "description": null,
+        "price": 1.99,
+        "imagePaths": []
+      },
+      "productNum": 2
+    }
+  ],
+  "apiKey": "restaurant-api-key-001"
+}
+
+4.
+{
+  "tableNumber": 12,
+  "uuid": "550e8400-e29b-41d4-a716-446655440003",
+  "orderedProducts": [
+    {
+      "productDTO": {
+        "id": 12,
+        "name": "Chocolate Cake",
+        "description": "Rich chocolate layered cake",
+        "price": 4.5,
+        "imagePaths": []
+      },
+      "productNum": 5
+    }
+  ],
+  "apiKey": "restaurant-api-key-002"
+}
+
+5.
+{
+  "tableNumber": 15,
+  "uuid": "550e8400-e29b-41d4-a716-446655440004",
+  "orderedProducts": [
+    {
+      "productDTO": {
+        "id": 13,
+        "name": "Grilled Salmon",
+        "description": "Salmon fillet with lemon butter",
+        "price": 15.99,
+        "imagePaths": []
+      },
+      "productNum": 2
+    },
+    {
+      "productDTO": {
+        "id": 15,
+        "name": "Mashed Potatoes",
+        "description": null,
+        "price": 4.0,
+        "imagePaths": []
+      },
+      "productNum": 2
+    },
+    {
+      "productDTO": {
+        "id": 16,
+        "name": "Steamed Vegetables",
+        "description": null,
+        "price": 3.5,
+        "imagePaths": []
+      },
+      "productNum": 1
+    },
+    {
+      "productDTO": {
+        "id": 17,
+        "name": "Iced Tea",
+        "description": "Rwandan nice Iced Tea",
+        "price": 2.0,
+        "imagePaths": []
+      },
+      "productNum": 4
+    }
+  ],
+  "apiKey": "restaurant-api-key-003"
+}
+
+
+Order Fail
+----------------
+
+{
+  "cause": "BAD_COMMAND",
+  "orderUUID": "ORD-20260612-001",
+  "staffUsername": "john.doe"
+}
+{
+  "cause": "FAILED_STAFF",
+  "orderUUID": "ORD-20260612-002",
+  "staffUsername": "mary.smith"
+}
+{
+  "cause": "BAD_COMMAND",
+  "orderUUID": "550e8400-e29b-41d4-a716-446655440000",
+  "staffUsername": "admin"
+}
+{
+  "cause": "FAILED_STAFF",
+  "orderUUID": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "staffUsername": "warehouse_user"
+}
+{
+  "cause": "BAD_COMMAND",
+  "orderUUID": "a987fbc9-4bed-3078-cf07-9141ba07c9f3",
+  "staffUsername": "cashier01"
+}
+
+
 android key
 --------------
 
 {
     "key" : "911"
 }
+
