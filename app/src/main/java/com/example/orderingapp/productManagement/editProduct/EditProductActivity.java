@@ -2,18 +2,15 @@ package com.example.orderingapp.productManagement.editProduct;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -22,23 +19,30 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.orderingapp.R;
 import com.example.orderingapp.convert.UnitConverter;
+import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
+import com.example.orderingapp.toast.Toasts;
+import com.example.orderingapp.ui.UI;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-public class EditProductActivity extends AppCompatActivity {
+public class EditProductActivity extends AppCompatActivity implements ShowToastFromBgThread
+{
+    private interface EventCallBack {
+        void run();
+    }
 
     private String originalName;
-    private final List<Uri> newImageUris = new LinkedList<>();
-    private final List<String> currentImages = new ArrayList<>();
+    private final List<String> oldImages = new ArrayList<>();
+    private final List<String> oldRemovedImages = new ArrayList<>();
+    private final List<String> newImages = new ArrayList<>();
     private final UnitConverter unitConverter = new UnitConverter();
 
     @Override
@@ -83,75 +87,67 @@ public class EditProductActivity extends AppCompatActivity {
         if (title != null) title.setText("Edit Product");
     }
 
-    private void loadProductData() {
+    private void loadProductData() 
+    {
         Intent intent = getIntent();
         if (intent == null) return;
 
         originalName = intent.getStringExtra("product_name");
-        String price = intent.getStringExtra("product_price");
+        double price = intent.getDoubleExtra("product_price", 0);
         String description = intent.getStringExtra("product_description");
         ArrayList<String> images = intent.getStringArrayListExtra("product_images");
+        
+        UI.setTextViewTxt(new TextView[] {findViewById(R.id.edit_product_name_input), findViewById(R.id.edit_product_price_input), findViewById(R.id.edit_product_description_input) }
+                , new String[] { originalName, String.valueOf(price), description });
 
-        ((EditText) findViewById(R.id.edit_product_name_input)).setText(originalName);
-        ((EditText) findViewById(R.id.edit_product_price_input)).setText(price != null ? price.replace("$", "") : "");
-        ((EditText) findViewById(R.id.edit_product_description_input)).setText(description);
-
-        if (images != null) {
-            currentImages.addAll(images);
-            for (String path : images) {
-                addImageToLayout(path, null);
-            }
-        }
+        oldImages.addAll(images);
+        for (String path : images)
+            addImageToLayout(path, () -> {
+                oldRemovedImages.add(path);
+                oldImages.remove(path);
+            });
     }
 
-    private void addImageToLayout(@Nullable String existingPath, @Nullable Uri newUri) {
+    private void addImageToLayout( @Nullable String imagePath, EventCallBack callBack)
+    {
         LinearLayout container = findViewById(R.id.edit_images_container);
         MaterialCardView card = createCard();
-        ImageView iv = new ImageView(this);
-        iv.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ImageSlider slider = new ImageSlider(this);
+        slider.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        if (newUri != null) {
-            iv.setImageURI(newUri);
-        } else if (existingPath != null) {
-            int resId = getResources().getIdentifier(existingPath, "drawable", getPackageName());
-            if (resId != 0) {
-                iv.setImageResource(resId);
-            } else {
-                File productsDir = new File(getFilesDir(), "products");
-                File file = findImageFile(productsDir, existingPath);
-                if (file != null) {
-                    iv.setImageURI(Uri.fromFile(file));
-                }
-            }
-        }
+        slider.setImageList(List.of(new SlideModel(imagePath, ScaleTypes.CENTER_INSIDE)));
 
-        card.addView(iv);
-        card.setOnLongClickListener(v -> {
+        slider.setClickable(false);
+        slider.setFocusable(false);
+        slider.setLongClickable(false);
+
+        card.addView(slider);
+        cardListener(card, callBack);
+        container.addView(card);
+    }
+
+    private void cardListener (MaterialCardView card, EventCallBack callBack)
+    {
+        LinearLayout container = findViewById(R.id.edit_images_container);
+
+        card.setOnClickListener(l -> {
+            System.out.println("Clicked");
+        });
+
+        card.setOnLongClickListener(v ->
+        {
             new AlertDialog.Builder(this)
                     .setTitle("Remove Image")
                     .setMessage("Remove this image?")
-                    .setPositiveButton("Yes", (d, w) -> {
+                    .setPositiveButton("Yes", (d, w) ->
+                    {
                         container.removeView(card);
-                        if (newUri != null) newImageUris.remove(newUri);
-                        if (existingPath != null) currentImages.remove(existingPath);
+                        callBack.run();
                     })
                     .setNegativeButton("No", null)
                     .show();
             return true;
         });
-        container.addView(card);
-    }
-
-    private File findImageFile(File dir, String name) {
-        File file = new File(dir, name);
-        if (file.exists()) return file;
-        String[] extensions = {".png", ".webp", ".jpg", ".jpeg", ".bmp"};
-        for (String ext : extensions) {
-            File f = new File(dir, name + ext);
-            if (f.exists()) return f;
-        }
-        return null;
     }
 
     public void addImageClicked() {
@@ -162,19 +158,35 @@ public class EditProductActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            newImageUris.add(uri);
-            addImageToLayout(null, uri);
-        }
+        
+        if (resultCode != RESULT_OK || data == null || data.getData() == null) return;
+        
+        Uri uri = data.getData();
+        
+        newImages.add(uri.toString());
+        
+        addImageToLayout(newImages.get(newImages.size()-1), () -> 
+        {
+            newImages.remove(uri.toString());
+        });
     }
 
     private MaterialCardView createCard() {
         int size = unitConverter.dpToPx(this, 100);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
         lp.setMargins(8, 8, 8, 8);
-        MaterialCardView card = new MaterialCardView(this);
+
+        // Override onInterceptTouchEvent to capture all touch events at the card level,
+        // preventing the ImageSlider from consuming them.
+        MaterialCardView card = new MaterialCardView(this) {
+            @Override
+            public boolean onInterceptTouchEvent(MotionEvent ev) {
+                return true;
+            }
+        };
+
         card.setLayoutParams(lp);
         card.setRadius(unitConverter.dpToPx(this, 12));
         card.setCardElevation(unitConverter.dpToPx(this, 2));
@@ -188,49 +200,48 @@ public class EditProductActivity extends AppCompatActivity {
     }
 
     public void updateClicked() {
-        String newName = ((EditText) findViewById(R.id.edit_product_name_input)).getText().toString().trim();
-        if (newName.isEmpty()) {
-            Toast.makeText(this, "Product name is required", Toast.LENGTH_SHORT).show();
+
+        String productName = ((EditText)findViewById(R.id.edit_product_name_input)).getText().toString();
+
+        String productPrice = ((EditText)findViewById(R.id.edit_product_price_input)).getText().toString();
+
+        String productDescription = ((EditText)findViewById(R.id.edit_product_description_input)).getText().toString();
+
+        if (productName.isBlank() || productPrice.isBlank() || productDescription.isBlank()) {
+            Toasts.showShortToast(this, "Please fill in all fields");
             return;
         }
 
-        File productsDir = new File(getFilesDir(), "products");
-        if (!productsDir.exists()) productsDir.mkdirs();
+        double price = getPriceFromString(productPrice);
 
-        // If the name changed, we should delete/rename old files associated with the old name
-        if (!newName.equals(originalName)) {
-            File[] files = productsDir.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.getName().startsWith(originalName)) {
-                        file.delete();
-                    }
-                }
-            }
-        }
+        if (price == Double.NEGATIVE_INFINITY)
+            return;
 
+        new EditProductServer(
+                oldRemovedImages,
+                newImages,
+                originalName,
+                this,
+                productName,
+                price,
+                productDescription
+        ).execute();
+    }
+
+    private double getPriceFromString (String productPrice) {
         try {
-            int count = 1;
-            // Note: Since we don't have a database, we'll re-save everything to internal storage 
-            // to ensure consistency with the current name.
-            
-            // This is a simplified simulation of updating product metadata and images.
-            for (Uri uri : newImageUris) {
-                InputStream is = getContentResolver().openInputStream(uri);
-                Bitmap bm = BitmapFactory.decodeStream(is);
-                File file = new File(productsDir, newName + count + ".png");
-                FileOutputStream out = new FileOutputStream(file);
-                bm.compress(Bitmap.CompressFormat.PNG, 100, out);
-                out.close();
-                is.close();
-                count++;
-            }
-            
-            Toast.makeText(this, "Product updated successfully!", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_OK);
-            finish();
-        } catch (Exception e) {
-            Toast.makeText(this, "Failed to update: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            String cleanPrice = productPrice.replace("$", "").trim();
+            return Double.parseDouble(cleanPrice);
+        } catch (NumberFormatException e) {
+            Toasts.showShortToast(this, "Invalid price format");
         }
+        return Double.NEGATIVE_INFINITY;
+    }
+
+    @Override
+    public void showToast(String message) {
+        runOnUiThread(() -> {
+            Toasts.showShortToast(this, message);
+        });
     }
 }

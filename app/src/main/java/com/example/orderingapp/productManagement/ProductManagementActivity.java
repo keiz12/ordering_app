@@ -2,6 +2,7 @@ package com.example.orderingapp.productManagement;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -50,6 +51,9 @@ public class ProductManagementActivity extends AppCompatActivity
     private void setHeader() {
         TextView textView = findViewById( R.id.header_title_textview);
         textView.setText("Products");
+
+        ImageButton button = findViewById(R.id.btn_header_back);
+        button.setOnClickListener(l -> finish());
     }
 
     public void addNewProductClicked () {

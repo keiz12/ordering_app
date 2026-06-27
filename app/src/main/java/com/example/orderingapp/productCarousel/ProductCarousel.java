@@ -68,8 +68,8 @@ public class ProductCarousel {
         LinearLayout mainContent = createMainContentContainer(context);
 
         mainContent.addView(createHeader(context, product.getName()));
-        mainContent.addView(createImageSlider(context, product.getImagePaths()));
-        mainContent.addView(createPriceView(context, product.getPrice()));
+        mainContent.addView(createImageSlider(context, product.getImageURLPath()));
+        mainContent.addView(createPriceView(context, String.valueOf(product.getPrice())));
         mainContent.addView(createDescriptionView(context, product.getDescription()));
 
         itemContainer.addView(mainContent);
@@ -130,23 +130,23 @@ public class ProductCarousel {
         return header;
     }
 
-    private View createImageSlider(Context context, List<String> paths) {
+    private View createImageSlider(Context context, List<String> paths)
+    {
         ImageSlider slider = new ImageSlider(context);
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 unitConverter.dpToPx(context, 350));
+
         slider.setLayoutParams(params);
 
         List<SlideModel> slideModels = new ArrayList<>();
-        if (paths != null) {
-            for (String path : paths) {
-                int resId = context.getResources().getIdentifier(path, "drawable", context.getPackageName());
-                if (resId != 0) {
-                    slideModels.add(new SlideModel(resId, ScaleTypes.CENTER_CROP));
-                }
-            }
-        }
+
+        for (String path : paths)
+            slideModels.add(new SlideModel(path, ScaleTypes.CENTER_INSIDE));
+
         slider.setImageList(slideModels);
+
         return slider;
     }
 
@@ -155,7 +155,7 @@ public class ProductCarousel {
         int px = unitConverter.dpToPx(context, 12);
         tvPrice.setPadding(px, px, px, 0);
         tvPrice.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tvPrice.setText(price);
+        tvPrice.setText("$"+price);
         tvPrice.setTextSize(22);
         tvPrice.setTextColor(context.getResources().getColor(R.color.primary_color));
         tvPrice.setTypeface(null, Typeface.BOLD);

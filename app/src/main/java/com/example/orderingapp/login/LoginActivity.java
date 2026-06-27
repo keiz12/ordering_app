@@ -15,7 +15,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.orderingapp.R;
+import com.example.orderingapp.apiKeyManagement.database.APIKeyDatabase;
 import com.example.orderingapp.connection.webSocket.WebSocketConnection;
+import com.example.orderingapp.employeeManagement.database.EmployeeDatabase;
 import com.example.orderingapp.home.HomeActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
         setListeners();
+        sqlInit();
     }
 
 
@@ -55,11 +58,12 @@ public class LoginActivity extends AppCompatActivity {
 
         TextInputEditText password = findViewById(R.id.password_input);
 
-        System.out.println(username.getText());
-        System.out.println(password.getText());
+        if (username.getText() == null || password.getText() == null)
+            return;
 
-//        serverSideLoginCall ()
-        showHomeActivity();
+        new LoginServer(this, username.getText().toString(), password.getText().toString()).run();
+
+//        showHomeActivity();
     }
 
 
@@ -67,10 +71,22 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void showHomeActivity () {
+    public void showHomeActivity () {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
 
+    private void sqlInit ()
+    {
+        new Handler().postDelayed(() ->
+        {
+            var employeeDB = new EmployeeDatabase(this);
+            var apiKeyDb = new APIKeyDatabase(this);
+
+            employeeDB.onCreate(employeeDB.getWritableDatabase());
+            apiKeyDb.onCreate(apiKeyDb.getWritableDatabase());
+
+        }, 1000);
+    }
 }

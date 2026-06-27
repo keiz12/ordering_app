@@ -6,4 +6,12 @@
     </style>
 
     <style name="Theme.OrderingApp" parent="Base.Theme.OrderingApp" />
+
+    <style name="TransparentProgressDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item> <!-- Set false for fully clear bg -->
+    </style>
+
 </resources>

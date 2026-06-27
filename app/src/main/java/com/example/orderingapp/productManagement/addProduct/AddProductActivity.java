@@ -23,6 +23,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.orderingapp.R;
 import com.example.orderingapp.convert.UnitConverter;
+import com.example.orderingapp.dto.Product;
+import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
+import com.example.orderingapp.toast.Toasts;
+import com.example.orderingapp.ui.UI;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
@@ -34,10 +38,9 @@ import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AddProductActivity extends AppCompatActivity
+public class AddProductActivity extends AppCompatActivity implements ShowToastFromBgThread
 {
-    private final List<ImageView> imageViews = new LinkedList<>();
-    private final List<Uri> imageUris = new LinkedList<>();
+    private final ManageAddedProduct addedProduct = new ManageAddedProduct();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,10 +84,6 @@ public class AddProductActivity extends AppCompatActivity
 
     public void addProductImage()
     {
-        launchIntent ();
-    }
-
-    private void launchIntent () {
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -93,147 +92,53 @@ public class AddProductActivity extends AppCompatActivity
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK || data == null)
-            return;
-        android.net.Uri uri = data.getData();
-
-        imageUris.add(uri);
-        imageViews.add(new ImageView(this));
-        ImageView imageView = imageViews.get(imageViews.size()-1);
-
-        imageView.setImageURI(uri);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        
-        LinearLayout layout = findViewById(R.id.added_product_images_container);
-        MaterialCardView materialCardView = createMaterialCardView();
-        setMaterialCardViewListener(layout, materialCardView, imageView);
-        materialCardView.addView(imageView);
-        layout.addView(materialCardView);
+        addedProduct.onActivityResult(this,
+                findViewById(R.id.added_product_images_container),
+                requestCode,
+                resultCode,
+                data);
     }
 
-    private MaterialCardView createMaterialCardView ()
-    {
-        UnitConverter unitConverter = new UnitConverter();
-
-        FrameLayout.LayoutParams cardParams = new FrameLayout.LayoutParams(unitConverter.dpToPx(this, 100), unitConverter.dpToPx(this, 100));
-        MaterialCardView cardView = new MaterialCardView(this);
-
-        int id = View.generateViewId();
-
-        cardView.setId(id);
-        cardView.setLayoutParams(cardParams);
-        cardView.setClickable(true);
-        cardView.setFocusable(true);
-
-        return cardView;
-
-    }
-
-    private void setMaterialCardViewListener (LinearLayout layout, MaterialCardView materialCardView, ImageView imageView)
-    {
-
-
-        materialCardView.setOnLongClickListener(v -> {
-
-            // 1. Build the Popup Dialog confirmation window
-            new AlertDialog.Builder(this)
-                    .setTitle("Remove Image")
-                    .setMessage("Are you sure you want to remove this image?")
-
-                    // 2. Handle the "Yes" action
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        // Clear the image source completely
-                        imageView.setImageURI(null);
-                        imageView.setImageDrawable(null);
-                        imageViews.remove(imageView);
-                        layout.removeView(materialCardView);
-                    })
-
-                    // 3. Handle the "No" action
-                    .setNegativeButton("No", (dialog, which) -> {
-                        // Just dismiss the dialog window and do nothing
-                        dialog.dismiss();
-                    })
-                    .show();
-
-            // 4. Return true to signal that the touch event was fully handled
-            return true;
-        });;
-    }
-
-    public void clearButtonClick() {
-        new AlertDialog.Builder(this)
-                .setTitle("Clear Form")
-                .setMessage("Are you sure you want to clear all inputs and images?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    ((EditText)findViewById(R.id.add_product_name_input)).setText("");
-                    ((EditText)findViewById(R.id.add_product_price_input)).setText("");
-                    ((EditText)findViewById(R.id.add_product_description_input)).setText("");
-
-                    LinearLayout layout = findViewById(R.id.added_product_images_container);
-                    // Remove all images except the add button (which is at index 0 in the XML usually,
-                    // but wait, it might be added programmatically or be the first child).
-                    // In the XML, add_product_image_button is the first child.
-                    int childCount = layout.getChildCount();
-                    for (int i = childCount - 1; i > 0; i--) {
-                        layout.removeViewAt(i);
-                    }
-                    imageViews.clear();
-                    imageUris.clear();
-                })
-                .setNegativeButton("No", null)
-                .show();
+    private void clearButtonClick() {
+        addedProduct.clearButtonClicked(this,
+                findViewById(R.id.add_product_name_input),
+                findViewById(R.id.add_product_price_input),
+                findViewById(R.id.add_product_description_input),
+                findViewById(R.id.added_product_images_container));
     }
 
     public void saveButtonClicked() {
 
         String productName = ((EditText)findViewById(R.id.add_product_name_input)).getText().toString();
 
-        if (productName.isEmpty()) {
-            Toast.makeText(this, "Please enter product name", Toast.LENGTH_SHORT).show();
+        String productPrice = ((EditText)findViewById(R.id.add_product_price_input)).getText().toString();
+
+        String productDescription = ((EditText)findViewById(R.id.add_product_description_input)).getText().toString();
+
+        if (productName.isBlank() || productPrice.isBlank() || productDescription.isBlank()) {
+            showToast("Please fill in all fields");
             return;
         }
 
-        if (imageUris.isEmpty()) {
-            Toast.makeText(this, "Please add at least one image", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        addedProduct.saveButtonClicked(this, getAddedProduct(productName, productPrice, productDescription));
+    }
 
-        File productsDir = new File(getFilesDir(), "products");
-        if (!productsDir.exists()) {
-            productsDir.mkdirs();
-        }
+    private Product getAddedProduct (String productName, String productPrice, String productDescription)
+    {
+        Product product = new Product();
 
-        int count = 1;
+        product.setName(productName);
+        product.setPrice(Double.parseDouble(productPrice));
+        product.setDescription(productDescription);
 
-        try {
-            count = Files.list(productsDir.toPath()).count() == 0 ? 1 : (int) Files.list(productsDir.toPath()).count();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return product;
+    }
 
-        try {
-            for (Uri uri : imageUris)
-            {
-                InputStream inputStream = getContentResolver().openInputStream(uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
-                File file = new File(productsDir, productName + count + ".png");
-                FileOutputStream out = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                out.flush();
-                out.close();
-                inputStream.close();
-                count++;
-            }
-            Toast.makeText(this, "Product saved successfully with " + (count - 1) + " images", Toast.LENGTH_SHORT).show();
-            finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error saving product images: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+    public void showToast (String txt) {
+        runOnUiThread(() -> Toasts.showShortToast(this, txt));
     }
 }

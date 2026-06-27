@@ -2,6 +2,6 @@ package com.example.orderingapp.connection;
 
 public class Connection {
 
-    public static final String ipV4 = "192.168.61.78";
-    public static final String port = "8081";
+    public static final String ipV4 = "10.25.17.148";
+    public static final String port = "9090";
 }

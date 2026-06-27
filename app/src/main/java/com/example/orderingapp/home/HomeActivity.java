@@ -19,15 +19,21 @@ import com.example.orderingapp.R;
 import com.example.orderingapp.apiKeyManagement.APIKeyManagementActivity;
 import com.example.orderingapp.connection.test.TestConnection;
 import com.example.orderingapp.connection.webSocket.WebSocketConnection;
+import com.example.orderingapp.dto.Employee;
 import com.example.orderingapp.employeeManagement.EmployeeManagementActivity;
+import com.example.orderingapp.employeeManagement.database.EmployeeDatabase;
+import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
+import com.example.orderingapp.my_profile.MyProfileActivity;
 import com.example.orderingapp.order.OrderManagementActivity;
 import com.example.orderingapp.productManagement.ProductManagementActivity;
+import com.example.orderingapp.toast.Toasts;
+import com.example.orderingapp.ui.UI;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements ShowToastFromBgThread {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,15 +44,64 @@ public class HomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        setListeners();
 
-        // Delay background work slightly to avoid conflict with ActivityManager locks during startup/transition
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            activityStart();
-        }, 500);
+        hideMaterialCards();
+        setListeners();
     }
 
     private void setListeners() {
+
+
+        String role = employeeRole();
+        if (role == null) return;
+
+        if (role.equalsIgnoreCase("BOSS"))
+        {
+            showBossUserMaterialCards();
+            setEventListenerForBossUserMaterialCards();
+        }
+        else if (role.equalsIgnoreCase("MANAGER"))
+        {
+            showManagerUserMaterialCards();
+            setEventListenerForManagerUserMaterialCards();
+        }
+        else if (role.equalsIgnoreCase("STAFF"))
+        {
+            showEmployeeUserMaterialCards();
+            setEventListenerForEmployeeUserMaterialCards();
+        }
+
+        TextView textView =  findViewById(R.id.home_userrole_textview);
+        UI.setTextViewTxt(new TextView[]{textView}, new String[]{"Hello, "+role});
+    }
+    private void hideMaterialCards () {
+        findViewById(R.id.card_manage_api_key).setVisibility(View.GONE);
+        findViewById(R.id.card_manage_employees).setVisibility(View.GONE);
+        findViewById(R.id.card_manage_products).setVisibility(View.GONE);
+        findViewById(R.id.card_view_orders).setVisibility(View.GONE);
+        findViewById(R.id.card_admin_dashboard).setVisibility(View.GONE);
+        findViewById(R.id.card_profile).setVisibility(View.GONE);
+        findViewById(R.id.card_test_connection).setVisibility(View.GONE);
+    }
+
+    private void showBossUserMaterialCards () {
+        showForAllMaterialCards();
+        findViewById(R.id.card_manage_api_key).setVisibility(View.VISIBLE);
+        findViewById(R.id.card_manage_employees).setVisibility(View.VISIBLE);
+        findViewById(R.id.card_manage_products).setVisibility(View.VISIBLE);
+        findViewById(R.id.card_admin_dashboard).setVisibility(View.VISIBLE);
+    }
+
+    private void showManagerUserMaterialCards () {
+        showForAllMaterialCards();
+        findViewById(R.id.card_admin_dashboard).setVisibility(View.VISIBLE);
+    }
+
+    private void showEmployeeUserMaterialCards () {
+        showForAllMaterialCards();
+    }
+
+    private void setEventListenerForBossUserMaterialCards () {
         setManageApiKeyListener();
         setManageEmployeesListener();
         setManageProductsListener();
@@ -56,10 +111,23 @@ public class HomeActivity extends AppCompatActivity {
         setTestConnectionListener();
     }
 
-    private void activityStart() {
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
-        executorService.submit(() -> webSocketInit());
-        executorService.shutdown();
+    private void setEventListenerForManagerUserMaterialCards () {
+        setManageOrdersListener();
+        setAdminDashboardListener();
+        setProfileListener();
+        setTestConnectionListener();
+    }
+
+    private void setEventListenerForEmployeeUserMaterialCards () {
+        setManageOrdersListener();
+        setProfileListener();
+        setTestConnectionListener();
+    }
+
+    private void showForAllMaterialCards () {
+        findViewById(R.id.card_view_orders).setVisibility(View.VISIBLE);
+        findViewById(R.id.card_profile).setVisibility(View.VISIBLE);
+        findViewById(R.id.card_test_connection).setVisibility(View.VISIBLE);
     }
 
     private void setManageApiKeyListener() {
@@ -118,28 +186,30 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void adminDashboardClicked() {
-        Toast.makeText(this, "Admin Dashboard Clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, com.example.orderingapp.statistics.StatisticsActivity.class);
+        startActivity(intent);
     }
 
     private void profileClicked() {
-        Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MyProfileActivity.class);
+        startActivity(intent);
     }
 
     private void testConnectionClicked() {
         new TestConnection().testConnection(this);
     }
 
-    public void setHttpConnectionTextViewTxt(String text) {
+    public void setHttpConnectionTextViewTxt(String text)
+    {
         runOnUiThread(() -> {
             TextView textView = findViewById(R.id.http_connection_indicator);
             textView.setText(text);
         });
     }
 
-    private void webSocketInit () {
-        // Set the activity reference BEFORE connecting to ensure it's available for callbacks
-        WebSocketConnection.setHomeActivity(this);
-        WebSocketConnection.getInstance().connectAndSubscribe();
+    @Override
+    public void showToast(String message) {
+        Toasts.showShortToast(this, message);
     }
 
     public void setWebSocketTextViewTxt(String payload) {
@@ -149,5 +219,10 @@ public class HomeActivity extends AppCompatActivity {
             TextView textView = findViewById(R.id.websocket_connection_indicator);
             textView.setText(payload.trim());
         });
+    }
+
+    private String employeeRole () {
+        Employee employee = new EmployeeDatabase(this).readEmployee();
+        return employee != null ? employee.getRole() : "";
     }
 }

@@ -28,10 +28,8 @@ public class UpdateEmployeeServer {
 
         Request request = getRequest(connection, context, updateRequest);
 
-        try
+        try (Response response = connection.sendRequestDeprecated(request))
         {
-            Response response = connection.sendRequest(request);
-
             if (response == null || !response.isSuccessful())
                 throw new IOException();
 

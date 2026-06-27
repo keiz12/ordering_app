@@ -2,6 +2,8 @@ package com.example.orderingapp.employeeManagement;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,7 +30,16 @@ public class EmployeeManagementActivity extends AppCompatActivity
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        setHeader();
         setListeners();
+    }
+
+    private void setHeader() {
+        TextView textView = findViewById(R.id.header_title_textview);
+        textView.setText("Employee Management");
+
+        ImageButton button = findViewById(R.id.btn_header_back);
+        button.setOnClickListener(l -> finish());
     }
 
     private void setListeners() {
@@ -54,8 +65,6 @@ public class EmployeeManagementActivity extends AppCompatActivity
 
 
     public void myEmployeesClicked() {
-
-        Toast.makeText(this, "my Employees Clicked", Toast.LENGTH_SHORT).show();
         var i = new Intent(this, MyEmployeesActivity.class);
         startActivity(i);
     }

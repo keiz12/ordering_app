@@ -1,19 +1,13 @@
 package com.example.orderingapp.dto;
 
-import java.util.LinkedList;
+import java.util.*;
 
 public class Product {
     private String name;
-    private String price;
+    private double price;
     private String description;
-    private LinkedList<String> imagePaths;
-
-    public Product(String name, String price, String description, LinkedList<String> imagePaths) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.imagePaths = imagePaths;
-    }
+    private HashMap<String, String> imagePathToDeletePath = new HashMap<>();
+    private List<String> imageURLPath = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -23,11 +17,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -39,11 +33,19 @@ public class Product {
         this.description = description;
     }
 
-    public LinkedList<String> getImagePaths() {
-        return imagePaths;
+    public HashMap<String, String> getImagePathToDeletePath() {
+        return imagePathToDeletePath;
     }
 
-    public void setImagePaths(LinkedList<String> imagePaths) {
-        this.imagePaths = imagePaths;
+    public List<String> getImageURLPath() {
+        return imageURLPath;
+    }
+
+    public void setImagePathToDeletePath(HashMap<String, String> imagePathToDeletePath) {
+        this.imagePathToDeletePath = imagePathToDeletePath;
+    }
+
+    public void setImageURLPath(List<String> imageURLPath) {
+        this.imageURLPath = imageURLPath;
     }
 }

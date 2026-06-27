@@ -3,8 +3,7 @@ package com.example.orderingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.widget.TextView;
+import android.widget.*;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +11,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.orderingapp.connection.webSocket.WebSocketConnection;
+import com.example.orderingapp.apiKeyManagement.database.APIKeyDatabase;
+import com.example.orderingapp.dto.Employee;
+import com.example.orderingapp.employeeManagement.database.EmployeeDatabase;
+import com.example.orderingapp.home.HomeActivity;
 import com.example.orderingapp.login.LoginActivity;
+import com.example.orderingapp.order.orders.OrderingActivity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,11 +42,108 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(i);
+        runApp();
+
+//        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+//        startActivity(i);
+//
+//        ExecutorService service = Executors.newFixedThreadPool(1);
+//
+//        service.execute(() -> {
+////            initSQLLite();
+////            testingModeAppStartUp();
+//        });
+//
+//        service.close();
     }
+
+
+    private void runApp () {
+        new Handler().postDelayed(() -> {
+            sqlCheck();
+        }, 1000);
+    }
+
+    private void sqlCheck ()
+    {
+        var employeeDb = new EmployeeDatabase(this);
+        var apiKeyDb = new APIKeyDatabase(this);
+
+        employeeDb.onCreate(employeeDb.getWritableDatabase());
+        apiKeyDb.onCreate(apiKeyDb.getWritableDatabase());
+
+        Employee employee = employeeDb.readEmployee();
+        String apiKey = apiKeyDb.readAPIKey();
+
+        if (!apiKey.isBlank()) {
+            employeeDb.deleteEmployee();
+            startActivity(new Intent(this, OrderingActivity.class));
+            return;
+        }
+
+        if (employee == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            return;
+        }
+
+        startActivity(new Intent(this, HomeActivity.class));
+    }
+
+
 
     public void loginButtonClicked () {
         System.out.println("Hello I'm Clicked");
+    }
+
+    private void testingModeAppStartUp ()
+    {
+        String userFileName = "user.properties";
+        String apiFileName = "api.properties";
+
+        Properties properties = new Properties();
+
+        loadProperties(properties, userFileName);
+        loadProperties(properties, apiFileName);
+
+        initSQLLite(properties);
+    }
+
+    private void loadProperties (Properties properties, String fileName)
+    {
+
+        try (InputStream inputStream = getAssets().open(fileName))
+        {
+            properties.load(inputStream);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+//    private void initSQLLite ()
+//    {
+//        var apiKeyDb = new APIKeyDatabase(this);
+//        apiKeyDb.onUpgrade(apiKeyDb.getWritableDatabase(), 0, 0);
+//
+//        var employeeDB = new EmployeeDatabase(this);
+//        employeeDB.onUpgrade(employeeDB.getWritableDatabase(), 0, 0);
+//
+//        employeeDB.addEmployee(new Employee(0,"boss_user","BOSS","Boss@123"));
+//    }
+
+    private void initSQLLite (Properties properties)
+    {
+        var apiKeyDb = new APIKeyDatabase(this);
+//        apiKeyDb.onUpgrade(apiKeyDb.getWritableDatabase(), 0, 0);
+
+        apiKeyDb.startApiKeyDatabase(properties.getProperty("api_key"));
+
+        var employeeDB = new EmployeeDatabase(this);
+
+        employeeDB.startEmployeeDatabase(properties.getProperty("username"), properties.getProperty("password"), properties.getProperty("role"));
+
+//        employeeDB.onUpgrade(employeeDB.getWritableDatabase(), 0, 0);
+
+//        employeeDB.addEmployee(new Employee(0,"boss_user","BOSS","Boss@123"));
     }
 }

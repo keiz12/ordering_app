@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/customer_processed_orders_activity">
+
+    <!-- Premium Header Background -->
+
+    <include
+        android:id="@+id/processed_orders_header_include"
+        layout="@layout/header" />
+
+    <ImageButton
+        android:id="@+id/processed_orders_sidebar_toggle_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/processed_orders_header_include"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/arrow_down_float"
+        app:tint="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/processed_activity_title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/processed_orders_header_include"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Date: 2023-10-27"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/processed_activity_title_textview">
+
+        <include
+            layout="@layout/table_layout"
+            />
+
+    </ScrollView>
+
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/processed_activity_title_textview"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_margin="16dp"-->
+<!--        app:cardCornerRadius="16dp"-->
+<!--        app:cardElevation="4dp">-->
+
+
+<!--    </androidx.cardview.widget.CardView>-->
+
+    <!-- Overlay for clicking outside to close sidebar -->
+<!--    <View-->
+<!--        android:id="@+id/sidebar_overlay"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#40000000"-->
+<!--        android:visibility="visible"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true" />-->
+
+    <!-- Sidebar Layout (Initially hidden) -->
+    <LinearLayout
+        android:id="@+id/processed_orders_sidebar_layout"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:background="@color/white"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="20dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:id="@+id/sidebar_title_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Filter by Date"
+            android:textSize="22sp"
+            android:textColor="@color/primary_color"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"/>
+
+        <ListView
+            android:id="@+id/processed_orders_dates_listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="8dp"/>
+
+        <Button
+            android:id="@+id/sidebar_close_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Close"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/primary_color"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</RelativeLayout>

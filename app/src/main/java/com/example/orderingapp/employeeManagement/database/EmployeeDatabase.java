@@ -23,15 +23,28 @@ public class EmployeeDatabase extends SQLiteOpenHelper
 
     public EmployeeDatabase(@Nullable Context context) {
         super(context, SQLLite.DATABASE_NAME, null, SQLLite.VERSION);
-//        deleteEmployee ();
-//        onCreate(getWritableDatabase());
-//        addEmployee(new Employee(0,"boss_user","Boss@123","Boss@123"));
+    }
+
+    public void startEmployeeDatabase (String username, String password, String role)
+    {
+        onCreate(getWritableDatabase());
+        deleteEmployee();
+
+        if (username.isBlank())
+            return;
+
+        addEmployee(new Employee(0,username,role, password));
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + tableName);
         onCreate(sqLiteDatabase);
+    }
+
+    public void dropTables () {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + tableName);
     }
 
     @Override

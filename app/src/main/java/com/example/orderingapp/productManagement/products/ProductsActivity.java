@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,16 +18,19 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.orderingapp.R;
 import com.example.orderingapp.dto.Product;
+import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
 import com.example.orderingapp.productCarousel.ProductCarousel;
 import com.example.orderingapp.productManagement.editProduct.EditProductActivity;
+import com.example.orderingapp.toast.Toasts;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class ProductsActivity extends AppCompatActivity {
+public class ProductsActivity extends AppCompatActivity implements ShowToastFromBgThread {
 
     private static final int EDIT_PRODUCT_REQUEST = 100;
 
@@ -46,24 +50,20 @@ public class ProductsActivity extends AppCompatActivity {
 
     private void setHeader() {
         TextView textView = findViewById(R.id.header_title_textview);
-        if (textView != null) {
-            textView.setText("Products");
-        }
+        textView.setText("All Products");
+
+        ImageButton button = findViewById(R.id.btn_header_back);
+        button.setOnClickListener(l -> finish());
     }
 
-    private void addProducts() {
-        // Sample data - replaced with actual loading logic if available
-        List<Product> products = List.of(
-                new Product("Whatever", "$12", "It's good", new LinkedList<>(List.of(
-                        "order_receipt", "ic_shopping_cart", "login_activity_design"
-                ))),
-                new Product("Whatever 1", "$12", "It's good", new LinkedList<>(List.of(
-                        "order_receipt", "ic_shopping_cart"
-                ))));
-
-        LinearLayout root = findViewById(R.id.product_carousel_root_layout);
-        ProductCarousel carousel = ProductCarousel.getInstance();
-        carousel.populateCarousel(this, products, root, this::createActionButtons);
+    private void addProducts()
+    {
+        new ProductsActivityServer().getProducts(this, products ->
+        {
+            LinearLayout root = findViewById(R.id.product_carousel_root_layout);
+            ProductCarousel carousel = ProductCarousel.getInstance();
+            carousel.populateCarousel(this, products, root, this::createActionButtons);
+        });
     }
 
     /**
@@ -84,7 +84,7 @@ public class ProductsActivity extends AppCompatActivity {
             intent.putExtra("product_name", product.getName());
             intent.putExtra("product_price", product.getPrice());
             intent.putExtra("product_description", product.getDescription());
-            intent.putStringArrayListExtra("product_images", new ArrayList<>(product.getImagePaths()));
+            intent.putStringArrayListExtra("product_images", new ArrayList<>(product.getImageURLPath()));
             startActivityForResult(intent, EDIT_PRODUCT_REQUEST);
         });
 
@@ -99,7 +99,6 @@ public class ProductsActivity extends AppCompatActivity {
                     .setMessage("Are you sure you want to delete " + product.getName() + "?")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         performDeletion(product);
-                        addProducts(); // Refresh list
                     })
                     .setNegativeButton("No", null)
                     .show();
@@ -111,19 +110,15 @@ public class ProductsActivity extends AppCompatActivity {
     }
 
     private void performDeletion(Product product) {
-        // Delete associated images from internal storage "products" folder
-        File productsDir = new File(getFilesDir(), "products");
-        if (productsDir.exists()) {
-            File[] files = productsDir.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.getName().startsWith(product.getName())) {
-                        file.delete();
-                    }
-                }
+        new ProductsActivityServerDelete().deleteProduct(this, product, success ->
+        {
+            if (success) {
+                Toasts.showShortToast(this, "Product deleted successfully");
+                addProducts();
             }
-        }
-        Toast.makeText(this, product.getName() + " deleted", Toast.LENGTH_SHORT).show();
+            else
+                Toasts.showShortToast(this, "Failed to delete product");
+        });
     }
 
     @Override
@@ -132,5 +127,10 @@ public class ProductsActivity extends AppCompatActivity {
         if (requestCode == EDIT_PRODUCT_REQUEST && resultCode == RESULT_OK) {
             addProducts(); // Refresh after update
         }
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toasts.showShortToast(this, message);
     }
 }

@@ -21,7 +21,7 @@ public class DeleteEmployeeServer {
         Request request = getRequest(connection, context, id);
 
         try {
-            Response response = connection.sendRequest(request);
+            Response response = connection.sendRequestDeprecated(request);
 
             if (response == null || !response.isSuccessful())
                 throw new IOException();

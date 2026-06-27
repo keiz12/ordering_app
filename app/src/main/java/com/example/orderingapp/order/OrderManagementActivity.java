@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.orderingapp.R;
 import com.example.orderingapp.order.orders.OrderingActivity;
+import com.example.orderingapp.order.processedOrders.ProcessedOrdersActivity;
 import com.google.android.material.card.MaterialCardView;
 
 public class OrderManagementActivity extends AppCompatActivity {
@@ -35,7 +36,6 @@ public class OrderManagementActivity extends AppCompatActivity {
     private void setListeners() {
         setViewOrdersCardListener();
         setViewProcessedOrdersCardListener();
-        setViewFailedOrdersCardListener();
     }
 
     private void setViewOrdersCardListener() {
@@ -46,11 +46,6 @@ public class OrderManagementActivity extends AppCompatActivity {
     private void setViewProcessedOrdersCardListener() {
         MaterialCardView card = findViewById(R.id.processed_order_card);
         card.setOnClickListener(l -> viewProcessedOrdersClicked());
-    }
-
-    private void setViewFailedOrdersCardListener() {
-        MaterialCardView card = findViewById(R.id.failed_order_card);
-        card.setOnClickListener(l -> viewFailedOrdersClicked());
     }
 
     private void setupHeader() {
@@ -66,7 +61,8 @@ public class OrderManagementActivity extends AppCompatActivity {
 
     public void viewProcessedOrdersClicked ()
     {
-
+        var i = new Intent(this, ProcessedOrdersActivity.class);
+        startActivity(i);
     }
 
     public void viewFailedOrdersClicked ()

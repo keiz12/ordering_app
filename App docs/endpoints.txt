@@ -10,15 +10,15 @@ http://localhost:8081/secure/boss/all/users (GET)
 
 Product
 
-http://localhost:8081/secure/product (POST, GET[all], PUT)
+http://localhost:8081/secure/boss/product (POST, GET[all], PUT)
+
+http://localhost:8081/secure/boss/product/{product name} (DELETE)
 
 http://localhost:8081/all/product (GET[all])
 
 http://localhost:8081/all/product/{productName} (GET Product)
 
-http://localhost:8081/secure/product/test
-
-http://localhost:8081/secure/product/insert/images
+http://localhost:8081/secure/boss/product/test
 
 
 
@@ -26,7 +26,11 @@ Order
 
 http://localhost:8081/all/orders (POST, PUT, DELETE) // with api key
 
+http://localhost:8081/all/orders/{order uuid} // is order paid
+
 http://localhost:8081/secure/boss/order/delete
+
+http://localhost:8081/secure/all/order/date // all created_at order dates
 
 // find all orders
 
@@ -37,9 +41,11 @@ http://localhost:8081/staff-orders/{orderUuid} (POST)
 
 http://localhost:8081/staff-orders/by-date //  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
 
-ex: (/orders/by-date?date=2026-06-12)
+ex: (/orders/by-date?date=20-06-2026)
 
 http://localhost:8081/staff-orders/order-payment/{orderUuid} 
+
+http://localhost:8081/secure/order/{uuid}
 
 
 

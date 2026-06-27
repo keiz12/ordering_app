@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.orderingapp.connection.http.HttpServerConnection;
 import com.example.orderingapp.dto.Employee;
+import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -12,9 +13,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import okhttp3.Request;
 import okhttp3.Response;
@@ -36,7 +34,7 @@ public class EmployeesServer {
 
         Request request = getRequest(connection,context);
 
-        try (Response response = connection.sendRequest(request))
+        try (Response response = connection.sendRequestDeprecated(request))
         {
             if (response == null || !response.isSuccessful())
                 throw new IOException();
@@ -44,7 +42,7 @@ public class EmployeesServer {
             return extractEmployeesFromResponseBody (gson, response.body() );
 
         } catch (IOException e) {
-            Log.e("EmployeesServer", "Network error", e);
+            ((ShowToastFromBgThread) context).showToast("Failed to fetch employees\n403");
         }
 
         return new ArrayList<>();

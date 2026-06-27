@@ -14,6 +14,7 @@ okhttp = "4.12.0"
 flexbox = "3.0.0"
 navigationFragment = "2.9.8"
 navigationUi = "2.9.8"
+mpAndroidChart = "3.1.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -31,6 +32,8 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 flexbox = { group = "com.google.android.flexbox", name="flexbox", version.ref = "flexbox"}
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+mpAndroidChart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpAndroidChart" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

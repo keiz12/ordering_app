@@ -45,7 +45,7 @@ public class NewEmployeeAccountServer {
 
         Request request = getRequest(employeeJSONString, basicsCredentials);
 
-        Response response = connection.sendRequest(request);
+        Response response = connection.sendRequestDeprecated(request);
 
         if (response == null || !response.isSuccessful())
             contextDisplayMessage((NewEmployeeAccountActivity) context, employee.getUsername()+" account creation failed\nTry again letter");

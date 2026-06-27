@@ -3,7 +3,9 @@ package com.example.orderingapp.table;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -13,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.orderingapp.R;
 import com.example.orderingapp.convert.UnitConverter;
+import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,32 +34,41 @@ public class ConstructTable  {
         this.rowsData = rowsData;
     }
 
+    /**
+     *         if (notStartingFreshTable.length == 0)
+     *             startingFreshTable();
+     *         else
+     *             notStartingFreshTable();
+     *
+     * */
+
+    private void startingFreshTable () {
+        tableLayout.removeAllViews();
+        addTableHeader ();
+    }
+
+    private void notStartingFreshTable () {
+
+        if (tableLayout.getChildCount() > 0)
+            return;
+
+        tableLayout.removeViews(1, tableLayout.getChildCount() - 1);
+    }
+
     public void populateTable()
     {
+            tableLayout.removeAllViews();
+            addTableHeader ();
 
-        // Clear any existing default rows from the XML
-        tableLayout.removeAllViews();
+            for (List<String> rowData : rowsData)
+            {
+                TableRow tableRow = getDataTableRow();
 
-        addTableHeader ();
+                populateTableRow(tableRow, rowData, viewTypes);
 
-
-        // Loop through each row of text content data
-        for (List<String> rowData : rowsData)
-        {
-            TableRow tableRow = new TableRow(context);
-
-            // Set layout parameters for standard row structure
-            TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT
-            );
-            tableRow.setLayoutParams(rowParams);
-
-            populateTableRow(tableRow, rowData, viewTypes);
-
-            // Append completed row into the parent layout container
-            tableLayout.addView(tableRow);
-        }
+                // Append completed row into the table
+                tableLayout.addView(tableRow);
+            }
     }
 
     private void addTableHeader () {
@@ -72,10 +84,24 @@ public class ConstructTable  {
         tableLayout.addView(tableRow);
     }
 
-    private void populateTableRow (TableRow tableRow, List<String> rowData, List<String> viewTypes)
+    public TableRow getDataTableRow ()
+    {
+        TableRow tableRow = new TableRow(context);
+
+        // Set layout parameters for standard row structure
+        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT
+        );
+
+        tableRow.setLayoutParams(rowParams);
+
+        return tableRow;
+    }
+    public void populateTableRow (TableRow tableRow, List<String> rowData, List<String> viewTypes)
     {
 
-        tableRow.setPadding(new UnitConverter().dpToPx(context,10),new UnitConverter().dpToPx(context,10), new UnitConverter().dpToPx(context,10), new UnitConverter().dpToPx(context, 10));
+        setTableRowPadding(tableRow);
 
         for (int i = 0; i < rowData.size(); i++)
         {
@@ -83,27 +109,28 @@ public class ConstructTable  {
             String content = rowData.get(i);
             View viewToInject;
 
-            // Dynamically build the exact requested view type
-            if ("Button".equalsIgnoreCase(type)) {
-                Button button = new Button(context);
-                viewToInject = button;
-                addViewStyle(button, Button.class, content);
-                setButtonEventListener (button, rowData);
-            } else {
-                // Default fallback to TextView
-                TextView textView = new TextView(context);
-                viewToInject = textView;
-                addViewStyle(textView, TextView.class, content);
-            }
-
-
-
             // Apply basic cell parameter weights to fill columns evenly
             TableRow.LayoutParams cellParams = new TableRow.LayoutParams(
                     0,
                     TableRow.LayoutParams.WRAP_CONTENT,
                     1.0f
             );
+
+            // Dynamically build the exact requested view type
+            if ("Button".equalsIgnoreCase(type)) {
+                Button button = new Button(context);
+                viewToInject = button;
+                setButtonEventListener (button, rowData);
+                addViewStyle(button, Button.class, content);
+                setGravity(cellParams);
+            }
+            else {
+                // Default fallback to TextView
+                TextView textView = new TextView(context);
+                viewToInject = textView;
+                addViewStyle(textView, TextView.class, content);
+            }
+
             viewToInject.setLayoutParams(cellParams);
 
             // Add cell to row
@@ -111,18 +138,26 @@ public class ConstructTable  {
         }
     }
 
+    private void setTableRowPadding (TableRow tableRow) {
+        int dp = new UnitConverter().dpToPx(context,10);
+        tableRow.setPadding(dp, dp, dp, dp);
+    }
+
     private void addViewStyle (TextView view, Class viewClass, String text) {
 
         if (viewClass.equals(Button.class)) {
             setViewTextAlignment(view, View.TEXT_ALIGNMENT_CENTER);
-            setViewBackground(view, ContextCompat.getColor(context, R.color.white));
+            setViewBackground(view, ContextCompat.getColor(context, R.color.primary_color));
+            view.setTextColor(Color.WHITE);
+            view.setAllCaps(false);
+        } else {
+            view.setTextColor(Color.BLACK);
         }
         commonTextStyle(view, text);
     }
 
     private void commonTextStyle (TextView view, String text) {
         view.setText(text);
-        view.setTextColor(Color.BLACK);
         view.setTextSize(16);
         view.setTypeface(view.getTypeface(), Typeface.BOLD);
     }
@@ -143,5 +178,11 @@ public class ConstructTable  {
         TableEventListener listener = (TableEventListener) context;
 
         button.setOnClickListener(v -> listener.rowData(rowData));
+    }
+
+    private void setGravity ( TableRow.LayoutParams cellParams) {
+        int margin = new UnitConverter().dpToPx(context, 8);
+        cellParams.setMargins(margin, margin, margin, margin);
+        cellParams.gravity = Gravity.CENTER;
     }
 }

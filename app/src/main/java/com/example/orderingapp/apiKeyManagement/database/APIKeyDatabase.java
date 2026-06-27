@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.orderingapp.dto.Employee;
 import com.example.orderingapp.sql.enums.SQLLiteConstant;
 import com.example.orderingapp.sql.SQLLite;
 
@@ -22,16 +23,32 @@ public class APIKeyDatabase extends SQLiteOpenHelper
         super(context, SQLLite.DATABASE_NAME, null, SQLLite.VERSION);
     }
 
+    public void startApiKeyDatabase (String apiKey)
+    {
+        onCreate(getWritableDatabase());
+        deleteAPIKey();
+
+        if (apiKey.isBlank())
+            return;
+
+        addAPIKey(apiKey);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + tableName);
         onCreate(sqLiteDatabase);
     }
 
+    public void dropTables () {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + tableName);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(
-                "CREATE TABLE " + tableName +
+                "CREATE TABLE IF NOT EXISTS " + tableName +
                 " ("+ idColumn +" INTEGER PRIMARY KEY AUTOINCREMENT" +
                 " ,"+ apiKeyColumn +" TEXT)"
         );

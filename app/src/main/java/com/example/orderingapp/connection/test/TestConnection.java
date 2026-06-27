@@ -5,11 +5,11 @@ import com.example.orderingapp.connection.http.HttpServerConnection;
 import com.example.orderingapp.connection.webSocket.WebSocketConnection;
 import com.example.orderingapp.home.HomeActivity;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import okhttp3.Request;
-import okhttp3.Response;
 
 public class TestConnection {
 
@@ -17,16 +17,15 @@ public class TestConnection {
     {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        executorService.submit(() -> {
+        executorService.execute(() -> {
             run(homeActivity);
         });
 
-        executorService.submit(() -> {
-            WebSocketConnection.getInstance().sendToServerWebSocketTest();
+        executorService.execute(() -> {
+            WebSocketConnection.getInstance().runSocket(new TestWebSocketConnection(homeActivity));
         });
 
         executorService.shutdown();
-        executorService.close();
     }
 
     private void run (HomeActivity homeActivity)
@@ -35,17 +34,17 @@ public class TestConnection {
 
         Request request = buildRequest();
 
-        Response response = new HttpServerConnection().sendRequest(request);
+        HashMap<String, Object> responseMap = new HttpServerConnection().getResponseMap(request);
 
-        if (response == null || !response.isSuccessful()) {
+        if (responseMap == null || responseMap.get(HttpServerConnection.responseStatusKey).equals(Boolean.FALSE))
             setConnectionIndicatorText(homeActivity, "Disconnected");
-        }
-        else if (response.isSuccessful()) {
+
+        else if (responseMap.get(HttpServerConnection.responseStatusKey).equals(Boolean.TRUE))
             setConnectionIndicatorText(homeActivity, "Connected");
-        }
-        else {
+
+        else
             setConnectionIndicatorText(homeActivity, "Unknown Error");
-        }
+
     }
 
     private void setConnectionIndicatorText (HomeActivity homeActivity, String text) {
