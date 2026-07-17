@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         if (username.getText() == null || password.getText() == null)
             return;
 
+        setLoadingToVisible();
         new LoginServer(this, username.getText().toString(), password.getText().toString()).run();
 
 //        showHomeActivity();
@@ -88,5 +89,17 @@ public class LoginActivity extends AppCompatActivity {
             apiKeyDb.onCreate(apiKeyDb.getWritableDatabase());
 
         }, 1000);
+    }
+
+    public void setLoadingToVisible () {
+        runOnUiThread(()-> {
+            findViewById(R.id.loging_loading_textview).setVisibility(View.VISIBLE);
+        });
+    }
+
+    public void setLoadingToInvisible () {
+        runOnUiThread(() -> {
+            findViewById(R.id.loging_loading_textview).setVisibility(View.GONE);
+        });
     }
 }

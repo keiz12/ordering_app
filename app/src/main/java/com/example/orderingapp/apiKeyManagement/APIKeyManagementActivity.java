@@ -131,7 +131,7 @@ public class APIKeyManagementActivity extends AppCompatActivity implements ShowT
             boolean isCreated = database.addAPIKey(apiKey).equals(SQLLiteConstant.RECORD_CREATE_SUCCESSFULLY);
 
             if (isCreated) {
-                Toasts.showShortToast(this, "Api Key created successfully");
+                Toasts.showLongToast(this, "Api Key saved locally, please test it to match it with the server version.");
                 populateAPIKey();
             }
         });

@@ -4,11 +4,18 @@ User
 
 http://localhost:8081/secure/boss/create/user
 
+http://localhost:8081/secure/boss/create/users
+
 http://localhost:8081/secure/boss/all/users (GET)
 
+<<<<<<< HEAD
 http://localhost:8081/secure/login/user (login)
 
 http://localhost:8081/secure/user
+=======
+http://localhost:8081/secure/user/login (POST)
+
+>>>>>>> 9d4fca557161dceb8771947b5056cccd08fdc3c1
 
 
 Product
@@ -75,7 +82,12 @@ http://localhost:8081/secure/boss/android/key (POST, DELETE)
 
 http://localhost:8081/secure/boss/android/key/test
 
+<<<<<<< HEAD
 http://localhost:8081/secure/boss/android/key/count
+=======
+http://localhost:8081/secure/boss/android/key/count (get if android key is created)
+
+>>>>>>> 9d4fca557161dceb8771947b5056cccd08fdc3c1
 
 
 
@@ -94,6 +106,11 @@ Test
 http://localhost:8080/all/get/test
 
 http://localhost:8080/secure/get/test
+
+
+Order
+
+http://localhost:8080/all/post/customer-feedback
 
 
 /secure --> STAFF, MANAGER, BOSS

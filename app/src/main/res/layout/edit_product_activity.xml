@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/til_edit_name"
                 android:layout_marginTop="16dp"
-                android:hint="Price ($)"
+                android:hint="Price (RWF)"
                 app:startIconDrawable="@android:drawable/ic_menu_agenda"
                 app:startIconTint="@color/primary_color">
 
