@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.orderingapp.R;
 import com.example.orderingapp.dto.Employee;
 import com.example.orderingapp.dto.UserUpdateRequest;
+import com.example.orderingapp.employeeManagement.database.EmployeeDatabase;
 import com.example.orderingapp.employeeManagement.manipulate.delete.DeleteEmployeeServer;
 import com.example.orderingapp.employeeManagement.manipulate.update.UpdateEmployeeServer;
 import com.example.orderingapp.employeeManagement.myEmployees.MyEmployeesActivity;
@@ -110,6 +111,8 @@ public class ManipulateEmployeeCredentialActivity extends AppCompatActivity
             boolean isSuccessful = response != null && response.isSuccessful();
             if (response != null) response.close();
 
+            updateBossUserDatabase(newEmployee, isSuccessful);
+
             runOnUiThread(() -> {
                 runAfterUpdate(isSuccessful);
             });
@@ -128,6 +131,20 @@ public class ManipulateEmployeeCredentialActivity extends AppCompatActivity
         newEmployee.setPassword(etPassword.getText().toString());
 
         return newEmployee;
+    }
+
+    private void updateBossUserDatabase (Employee employee, boolean isSuccessful) {
+
+        boolean isBoss = employee.getRole().equals("BOSS");
+
+        if (!isBoss || !isSuccessful)
+            return;
+
+        var database = new EmployeeDatabase(this);
+        var currEmployee = database.readEmployee();
+
+        if (currEmployee.getUsername().equals(employee.getUsername()))
+            database.updateEmployee(employee);
     }
 
     private void runAfterUpdate (boolean isSuccessful)

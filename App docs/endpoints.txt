@@ -6,6 +6,8 @@ http://localhost:8081/secure/boss/create/user
 
 http://localhost:8081/secure/boss/all/users (GET)
 
+http://localhost:8081/secure/user/login (POST)
+
 
 
 Product
@@ -67,6 +69,8 @@ http://localhost:8081/secure/boss/android/key/validate
 http://localhost:8081/secure/boss/android/key (POST, DELETE)
 
 http://localhost:8081/secure/boss/android/key/test
+
+http://localhost:8081/secure/boss/android/key/count (get if android key is created)
 
 
 

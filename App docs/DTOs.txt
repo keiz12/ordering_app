@@ -37,6 +37,10 @@ USER
     "password": "Staff456@",
     "role": "STAFF"
   }
+"username": "Javan",
+    "password": "java123",
+    "role": "STAFF"
+
 ]
 
 update

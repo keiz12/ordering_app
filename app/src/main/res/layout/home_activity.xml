@@ -92,8 +92,8 @@
                 <!-- Manage API Key -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_manage_api_key"
-                    android:layout_width="160dp"
-                    android:layout_height="170dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -133,8 +133,8 @@
                 <!-- Manage Employees -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_manage_employees"
-                    android:layout_width="160dp"
-                    android:layout_height="170dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -174,8 +174,8 @@
                 <!-- Manage Products -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_manage_products"
-                    android:layout_width="160dp"
-                    android:layout_height="170dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -215,8 +215,8 @@
                 <!-- View Orders -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_view_orders"
-                    android:layout_width="160dp"
-                    android:layout_height="170dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -256,8 +256,8 @@
                 <!-- Admin Dashboard -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_admin_dashboard"
-                    android:layout_width="160dp"
-                    android:layout_height="170dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -297,8 +297,8 @@
                 <!-- Profile -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_profile"
-                    android:layout_width="160dp"
-                    android:layout_height="170dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -337,8 +337,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_test_connection"
-                    android:layout_width="160dp"
-                    android:layout_height="170dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"

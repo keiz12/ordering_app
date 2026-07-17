@@ -41,8 +41,8 @@
                 <!-- Add New Product Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/add_employee"
-                    android:layout_width="160dp"
-                    android:layout_height="180dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -82,8 +82,8 @@
                 <!-- Product Catalog Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_manage_api_key"
-                    android:layout_width="160dp"
-                    android:layout_height="180dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_margin="10dp"
                     android:clickable="true"
                     android:focusable="true"

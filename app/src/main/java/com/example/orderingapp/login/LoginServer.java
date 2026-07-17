@@ -37,12 +37,20 @@ public class LoginServer {
             runAfterResponse(new HttpServerConnection().getResponseMap(request));
         });
 
-        service.close();
+        service.shutdown();
     }
 
     private void runAfterResponse(HashMap<String, Object> map) {
-        if (map == null || Boolean.FALSE.equals(map.get(HttpServerConnection.responseStatusKey))) {
+
+        if (map == null ) {
+            Toasts.showLongToast(activity, "Network failed.");
+            activity.setLoadingToInvisible();
+            return;
+        }
+
+        if (Boolean.FALSE.equals(map.get(HttpServerConnection.responseStatusKey))) {
             Toasts.showLongToast(activity, "Authentication failed. The username or password you entered is incorrect. Please double-check your credentials and try again.");
+            activity.setLoadingToInvisible();
             return;
         }
 

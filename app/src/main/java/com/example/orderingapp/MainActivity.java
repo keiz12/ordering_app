@@ -12,11 +12,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.orderingapp.apiKeyManagement.database.APIKeyDatabase;
+import com.example.orderingapp.apiKeyManagement.server.APIKeyValidateServer;
 import com.example.orderingapp.dto.Employee;
 import com.example.orderingapp.employeeManagement.database.EmployeeDatabase;
 import com.example.orderingapp.home.HomeActivity;
+import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
 import com.example.orderingapp.login.LoginActivity;
 import com.example.orderingapp.order.orders.OrderingActivity;
+import com.example.orderingapp.toast.Toasts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +30,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ShowToastFromBgThread {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,10 +78,14 @@ public class MainActivity extends AppCompatActivity {
         Employee employee = employeeDb.readEmployee();
         String apiKey = apiKeyDb.readAPIKey();
 
-        if (!apiKey.isBlank()) {
-            employeeDb.deleteEmployee();
-            startActivity(new Intent(this, OrderingActivity.class));
-            return;
+        boolean apiKeyIsAbsent = apiKey.isBlank();
+
+        if (!apiKeyIsAbsent) {
+            if (handleRetrievedAPIKey(apiKey, apiKeyDb)) {
+                employeeDb.deleteEmployee();
+                startActivity(new Intent(this, OrderingActivity.class));
+                return;
+            }
         }
 
         if (employee == null) {
@@ -89,6 +96,26 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, HomeActivity.class));
     }
 
+
+    private boolean handleRetrievedAPIKey (String apiKey, APIKeyDatabase apiKeyDatabase) {
+        /*
+        * employeeDb.deleteEmployee();
+            startActivity(new Intent(this, OrderingActivity.class));
+        * */
+
+        APIKeyValidateServer apiKeyValidateServer = new APIKeyValidateServer(this);
+
+        apiKeyValidateServer.run();
+
+        boolean isValid = apiKeyValidateServer.isValid();
+
+        System.out.println(isValid);
+
+        if (!isValid)
+            apiKeyDatabase.deleteAPIKey();
+
+        return isValid;
+    }
 
 
     public void loginButtonClicked () {
@@ -145,5 +172,12 @@ public class MainActivity extends AppCompatActivity {
 //        employeeDB.onUpgrade(employeeDB.getWritableDatabase(), 0, 0);
 
 //        employeeDB.addEmployee(new Employee(0,"boss_user","BOSS","Boss@123"));
+    }
+
+    @Override
+    public void showToast(String message) {
+        runOnUiThread(() -> {
+            Toasts.showShortToast(this, message);
+        });
     }
 }
