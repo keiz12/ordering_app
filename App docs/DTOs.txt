@@ -88,198 +88,51 @@ create
 --------
 
 {
-  "name": "Keyboard",
-  "description": "Mechanical RGB keyboard",
+  "name": "Cheese",
+  "description": "Yummy cheese",
   "price": 79.99,
-  "imagePaths": []
-}
+  "imagePathToDeletePath":
+	{
+		"cheese pic1":"cheese pic1Delete",
+		"cheese pic2":"cheese pic2Delete",
+		"cheese pic3":"cheese pic3Delete"
+	}
+} ,
 
 {
-  "name": "Mouse",
-  "description": "Wireless gaming mouse",
-  "price": 49.99,
-  "imagePaths": [
-    "/uploads/mouse.jpg"
-  ]
-}
-
-{
-  "name": "Laptop",
-  "description": "16GB RAM, 1TB SSD",
-  "price": 1299.99,
-  "imagePaths": [
-    "/uploads/laptop-front.jpg",
-    "/uploads/laptop-side.jpg",
-    "/uploads/laptop-back.jpg"
-  ]
-}
-
-{
-  "name": "Smartphone",
-  "description": "256GB storage",
-  "price": 899.99,
-  "imagePaths": [
-    "/uploads/phone-1.jpg",
-    "/uploads/phone-2.jpg",
-    "/uploads/phone-3.jpg",
-    "/uploads/phone-4.jpg"
-  ]
+  "name": "Youghurt",
+  "description": "Yummy Youghurt",
+  "price": 79.99,
+  "imagePathToDeletePath":
+	{
+		"Youghurt pic1":"Youghurt pic1Delete",
+		"Youghurt pic2":"Youghurt pic2Delete",
+		"Youghurt pic3":"Youghurt pic3Delete"
+	}
 }
 
 update
 ----------
 
 {
-  "oldProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "16GB RAM, 1TB SSD",
-    "price": 1299.99,
-    "imagePaths": [
-      "/uploads/laptop-front.jpg",
-      "/uploads/laptop-side.jpg"
-    ]
-  },
-  "newProduct": {
-    "id": 1,
-    "name": "Gaming Laptop",
-    "description": "16GB RAM, 1TB SSD",
-    "price": 1299.99,
-    "imagePaths": [
-      "/uploads/laptop-front.jpg",
-      "/uploads/laptop-side.jpg"
-    ]
-  }
+"oldProductName":"Sweet Youghurt",
+    "newProduct": {
+        "name": "Sweet Youghurt",
+        "description": "Yummy Youghurt",
+        "price": 179.99,
+        "imageURLPath":
+            [
+                "Youghurt pic1",
+                "Youghurt pic2"
+            ],
+        "imagePathToDeletePath":
+        {
+            "Youghurt pic4":"Youghurt pic4Delete"
+        }
+    }
 }
 
-{
-  "oldProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "16GB RAM, 1TB SSD",
-    "price": 1299.99,
-    "imagePaths": []
-  },
-  "newProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "16GB RAM, 1TB SSD",
-    "price": 1499.99,
-    "imagePaths": []
-  }
-}
 
-{
-  "oldProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "16GB RAM, 1TB SSD",
-    "price": 1299.99,
-    "imagePaths": []
-  },
-  "newProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "32GB RAM, 2TB SSD",
-    "price": 1299.99,
-    "imagePaths": []
-  }
-}
-
-{
-  "oldProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "Gaming Laptop",
-    "price": 1499.99,
-    "imagePaths": [
-      "/uploads/laptop-front.jpg",
-      "/uploads/laptop-side.jpg"
-    ]
-  },
-  "newProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "Gaming Laptop",
-    "price": 1499.99,
-    "imagePaths": [
-      "/uploads/laptop-front.jpg",
-      "/uploads/laptop-side.jpg",
-      "/uploads/laptop-back.jpg",
-      "/uploads/laptop-open.jpg"
-    ]
-  }
-}
-
-{
-  "oldProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "Gaming Laptop",
-    "price": 1499.99,
-    "imagePaths": [
-      "/uploads/laptop-front.jpg",
-      "/uploads/laptop-side.jpg",
-      "/uploads/laptop-back.jpg"
-    ]
-  },
-  "newProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "Gaming Laptop",
-    "price": 1499.99,
-    "imagePaths": [
-      "/uploads/laptop-front.jpg"
-    ]
-  }
-}
-
-{
-  "oldProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "Gaming Laptop",
-    "price": 1499.99,
-    "imagePaths": [
-      "/uploads/old1.jpg",
-      "/uploads/old2.jpg"
-    ]
-  },
-  "newProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "Gaming Laptop",
-    "price": 1499.99,
-    "imagePaths": [
-      "/uploads/new1.jpg",
-      "/uploads/new2.jpg"
-    ]
-  }
-}
-
-{
-  "oldProduct": {
-    "id": 1,
-    "name": "Laptop",
-    "description": "16GB RAM",
-    "price": 1200.00,
-    "imagePaths": [
-      "/uploads/laptop1.jpg",
-      "/uploads/laptop2.jpg"
-    ]
-  },
-  "newProduct": {
-    "id": 1,
-    "name": "Gaming Laptop Pro",
-    "description": "32GB RAM, RTX 4080",
-    "price": 2499.99,
-    "imagePaths": [
-      "/uploads/laptop2.jpg",
-      "/uploads/laptop3.jpg",
-      "/uploads/laptop4.jpg"
-    ]
-  }
-}
 
 
 Order

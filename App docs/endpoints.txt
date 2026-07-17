@@ -6,6 +6,9 @@ http://localhost:8081/secure/boss/create/user
 
 http://localhost:8081/secure/boss/all/users (GET)
 
+http://localhost:8081/secure/login/user (login)
+
+http://localhost:8081/secure/user
 
 
 Product
@@ -37,13 +40,17 @@ http://localhost:8081/secure/all/order/date // all created_at order dates
 
 Staff Processed Order
 
-http://localhost:8081/staff-orders/{orderUuid} (POST)
+http://localhost:8081/staff-orders/process/{orderUuid} (POST)
+
+http://localhost:8081/staff-orders/unprocess/{orderUuid} (DELETE)
 
 http://localhost:8081/staff-orders/by-date //  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
 
 ex: (/orders/by-date?date=20-06-2026)
 
-http://localhost:8081/staff-orders/order-payment/{orderUuid} 
+http://localhost:8081/staff-orders/pay/confirm/{orderUuid} 
+
+http://localhost:8081/staff-orders/pay/rollback/{orderUuid} 
 
 http://localhost:8081/secure/order/{uuid}
 
@@ -62,13 +69,24 @@ http://localhost:8081/staff-failed-orders/orderUUID
 
 Android key
 
-http://localhost:8081/secure/boss/android/key/validate
+http://localhost:8081/secure/boss/android/key/validate (POST)
 
 http://localhost:8081/secure/boss/android/key (POST, DELETE)
 
 http://localhost:8081/secure/boss/android/key/test
 
+http://localhost:8081/secure/boss/android/key/count
 
+
+
+
+Statistics
+
+http://localhost:9090/secure/statistics
+
+Totals
+
+http://localhost:9090/secure/statistic/total
 
 
 Test
@@ -76,5 +94,8 @@ Test
 http://localhost:8080/all/get/test
 
 http://localhost:8080/secure/get/test
+
+
+/secure --> STAFF, MANAGER, BOSS
 
 

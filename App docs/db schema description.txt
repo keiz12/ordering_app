@@ -15,7 +15,7 @@ Goal
 
 - System will give recommendations on products that are sold a lot and products that are not sold a lot.
 	
-	* This will be done on a daily, monthly and all time basis. [It will use statistic graphs and plain text explanations]
+	* This will be done at any time range. [It will use statistic graphs and plain text explanations]
 
 - System will show cash entered on each day, each month and all time basis. [It will use statistic graphs and plain text explanations]
 

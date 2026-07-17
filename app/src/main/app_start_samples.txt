@@ -1,0 +1,30 @@
+
+username= boss_user
+password= Boss@123
+role= BOSS
+
+
+
+username= benjamin
+password= Ben@2026
+role= MANAGER
+
+
+username= manager_jane
+password= Manager@123
+role= MANAGER
+
+
+username= staff_mike
+password= Staff@123
+role= STAFF
+
+
+username= staff_alice
+password= Customer@123
+role= STAFF
+
+
+username= staff_sarah
+password= Staff456@
+role= STAFF

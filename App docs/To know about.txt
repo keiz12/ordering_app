@@ -1,8 +1,50 @@
 To know about 
 
-Waiter/waitress == staff
+1. when user clears the order, also clear the Qty TextInput
 
-D:\Desktop\Ordering App Server\orderingappserver\orderingapp\downloads
+2. Add date so that u update table layout smoothly
+
+3. When user saves API key, create new employee ... u can send him an email 
+
+4. On upgrade check, as now for every application start they'll be loss of data
+
+5. At add new employee activity add the header and set it's functionalities
+
+6. At my employees activity add the functionality to return back
+
+
+-----------------------------------------
+
+
+1. POST, GET and DELETE on Order
+
+2. POST, GET and DELETE on Processing Order
+
+3. POST, GET and DELETE on Failed Order
+
+4. Statistics
+
+5. User auth
+
+6. Change the ClientAuth message, so that it doesn't tell the problem
+
+7. Make all executor service run execute instead of submit and remove close() on them
+
+
+7. staff see 
+
+8. What if even though the order is approved that it's paid but there's an error, how to make it roll back?
+
+9.To remove starting log cat exceptions
+
+10. BigDecimal as recomended practice to deal with money
+
+
+--> Before making a push remember to remove your sql password and make it match to JKJK
+
+
+
+
 
 Till now the server works as a one restaurant ordering app, till the time the boss will be delegated to certain managers and managers to certain staff
 
