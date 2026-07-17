@@ -50,8 +50,12 @@ public class HttpServerConnection {
     public static String getCreatedAtOrder = "/secure/all/order/date";
     public static String getTotal = "/secure/statistic/total";
     public static String getStatistic = "/secure/statistics";
+    public static String postCustomerFeedback = "/all/post/customer-feedback";
+    public static String getCustomerFeedback = "/secure/get/all/customer-feedback";
+    public static String deleteCustomerFeedback = "/secure/boss/customer-feedback";
     public static String imgBB = "https://api.imgbb.com/1/upload";
     public static String imgBBApiKey = "76c232e2b61eebbb603017446eccdf9d";
+
     public static String responseStatusKey = "status";
     public static String responseBodyKey = "body";
 

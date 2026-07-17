@@ -45,19 +45,11 @@ public class MainActivity extends AppCompatActivity implements ShowToastFromBgTh
 
         super.onCreate(savedInstanceState);
 
-        runApp();
+//        runApp();
 
-//        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-//        startActivity(i);
-//
-//        ExecutorService service = Executors.newFixedThreadPool(1);
-//
-//        service.execute(() -> {
-////            initSQLLite();
-////            testingModeAppStartUp();
-//        });
-//
-//        service.close();
+        testingModeAppStartUp();
+
+//        service.shutdown();
     }
 
 
@@ -124,15 +116,20 @@ public class MainActivity extends AppCompatActivity implements ShowToastFromBgTh
 
     private void testingModeAppStartUp ()
     {
-        String userFileName = "user.properties";
-        String apiFileName = "api.properties";
+        new Handler().postDelayed(() ->
+        {
+            String userFileName = "user.properties";
+            String apiFileName = "api.properties";
 
-        Properties properties = new Properties();
+            Properties properties = new Properties();
 
-        loadProperties(properties, userFileName);
-        loadProperties(properties, apiFileName);
+            loadProperties(properties, userFileName);
+            loadProperties(properties, apiFileName);
 
-        initSQLLite(properties);
+            initSQLLite(properties);
+            showActivity(properties);
+
+        }, 1000);
     }
 
     private void loadProperties (Properties properties, String fileName)
@@ -147,31 +144,25 @@ public class MainActivity extends AppCompatActivity implements ShowToastFromBgTh
         }
     }
 
-//    private void initSQLLite ()
-//    {
-//        var apiKeyDb = new APIKeyDatabase(this);
-//        apiKeyDb.onUpgrade(apiKeyDb.getWritableDatabase(), 0, 0);
-//
-//        var employeeDB = new EmployeeDatabase(this);
-//        employeeDB.onUpgrade(employeeDB.getWritableDatabase(), 0, 0);
-//
-//        employeeDB.addEmployee(new Employee(0,"boss_user","BOSS","Boss@123"));
-//    }
-
     private void initSQLLite (Properties properties)
     {
         var apiKeyDb = new APIKeyDatabase(this);
-//        apiKeyDb.onUpgrade(apiKeyDb.getWritableDatabase(), 0, 0);
 
         apiKeyDb.startApiKeyDatabase(properties.getProperty("api_key"));
 
         var employeeDB = new EmployeeDatabase(this);
 
         employeeDB.startEmployeeDatabase(properties.getProperty("username"), properties.getProperty("password"), properties.getProperty("role"));
+    }
 
-//        employeeDB.onUpgrade(employeeDB.getWritableDatabase(), 0, 0);
+    private void showActivity (Properties properties) {
 
-//        employeeDB.addEmployee(new Employee(0,"boss_user","BOSS","Boss@123"));
+        String apiKey = String.valueOf(properties.get("api_key"));
+
+        if (apiKey.isBlank())
+            startActivity(new Intent(this, HomeActivity.class));
+        else
+            startActivity(new Intent(this, OrderingActivity.class));
     }
 
     @Override

@@ -108,9 +108,11 @@ http://localhost:8080/all/get/test
 http://localhost:8080/secure/get/test
 
 
-Order
+Customer Feedback
 
-http://localhost:8080/all/post/customer-feedback
+http://localhost:8080/all/post/customer-feedback (POST)
+
+http://localhost:8081/secure/get/customer-feedback (GET)
 
 
 /secure --> STAFF, MANAGER, BOSS

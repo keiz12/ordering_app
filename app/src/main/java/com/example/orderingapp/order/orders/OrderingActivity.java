@@ -8,12 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.orderingapp.convert.UnitConverter;
 import com.example.orderingapp.dto.*;
 import com.example.orderingapp.R;
+import com.example.orderingapp.customerFeedback.server.PostCustomerFeedbackServer;
 import com.example.orderingapp.interfaces.activity.ShowToastFromBgThread;
 import com.example.orderingapp.order.madeOrders.MadeOrdersActivity;
 import com.example.orderingapp.productCarousel.ProductCarousel;
@@ -34,7 +33,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -72,6 +70,8 @@ public class OrderingActivity extends AppCompatActivity implements ShowToastFrom
         setClearOrderViewListener ();
 
         loadMenu();
+
+        setCustomerFeedbackButtonListener();
     }
 
     private void loadMenu()
@@ -251,6 +251,17 @@ public class OrderingActivity extends AppCompatActivity implements ShowToastFrom
         Toasts.showLongToast(this, "Order cleared");
     }
 
+    private void setCustomerFeedbackButtonListener ()
+    {
+        findViewById(R.id.customer_feedback_button).setOnClickListener(v -> {
+
+            disableCustomerShareFeedbackButton ();
+            showCustomerFeedbackShareLoadingTextview();
+            TextInputEditText textInputEditText = findViewById(R.id.customer_feedback_textInput);
+            new PostCustomerFeedbackServer(this, textInputEditText.getText().toString()).postCustomerFeedback ();
+        });
+    }
+
     public void resetUuid() {
         this.uuid = UUID.randomUUID().toString();
     }
@@ -270,5 +281,31 @@ public class OrderingActivity extends AppCompatActivity implements ShowToastFrom
     @Override
     public void showToast(String message) {
         Toasts.showShortToast(this, message);
+    }
+
+    public void showCustomerFeedbackShareLoadingTextview () {
+        findViewById(R.id.customer_feedback_share_loading_textview).setVisibility(View.VISIBLE);
+    }
+
+    public void hideCustomerFeedbackShareLoadingTextview () {
+        runOnUiThread(() -> {
+            findViewById(R.id.customer_feedback_share_loading_textview).setVisibility(View.GONE);
+        });
+    }
+
+    public void enableCustomerShareFeedbackButton () {
+        runOnUiThread(() -> {
+            findViewById(R.id.customer_feedback_button).setEnabled(true);
+        });
+    }
+
+    private void disableCustomerShareFeedbackButton () {
+        findViewById(R.id.customer_feedback_button).setEnabled(false);
+    }
+
+    public void setBlankCustomerShareFeedbackInput () {
+        runOnUiThread(() -> {
+            ((TextInputEditText) findViewById(R.id.customer_feedback_textInput)).setText("");
+        });
     }
 }

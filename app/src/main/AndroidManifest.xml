@@ -90,6 +90,10 @@ android:fullBackupContent="@xml/backup_rules"
             android:name=".my_profile.MyProfileActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".customerFeedback.CustomerFeedbackActivity"
+            android:exported="false" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

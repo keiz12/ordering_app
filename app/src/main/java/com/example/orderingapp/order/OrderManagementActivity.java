@@ -2,6 +2,7 @@ package com.example.orderingapp.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -51,6 +52,9 @@ public class OrderManagementActivity extends AppCompatActivity {
     private void setupHeader() {
         TextView textView = findViewById(R.id.header_title_textview);
         textView.setText("Manage Orders");
+
+        ImageButton button = findViewById(R.id.btn_header_back);
+        button.setOnClickListener(l -> finish());
     }
 
     public void viewOrdersClicked ()

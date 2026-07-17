@@ -12,6 +12,18 @@
         layout="@layout/header"
         />
 
+    <TextView
+        android:id="@+id/add_product_loading_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Loading"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        android:layout_marginTop="60dp"
+        android:visibility="gone"
+        />
+
         <RelativeLayout
             android:id="@+id/product_layout"
             android:layout_width="match_parent"
@@ -163,5 +175,4 @@
             app:cornerRadius="12dp"
             android:backgroundTint="@color/primary_color"/>
     </LinearLayout>
-
 </RelativeLayout>

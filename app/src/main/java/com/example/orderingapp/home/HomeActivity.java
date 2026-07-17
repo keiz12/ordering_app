@@ -19,6 +19,7 @@ import com.example.orderingapp.R;
 import com.example.orderingapp.apiKeyManagement.APIKeyManagementActivity;
 import com.example.orderingapp.connection.test.TestConnection;
 import com.example.orderingapp.connection.webSocket.WebSocketConnection;
+import com.example.orderingapp.customerFeedback.CustomerFeedbackActivity;
 import com.example.orderingapp.dto.Employee;
 import com.example.orderingapp.employeeManagement.EmployeeManagementActivity;
 import com.example.orderingapp.employeeManagement.database.EmployeeDatabase;
@@ -82,6 +83,7 @@ public class HomeActivity extends AppCompatActivity implements ShowToastFromBgTh
         findViewById(R.id.card_admin_dashboard).setVisibility(View.GONE);
         findViewById(R.id.card_profile).setVisibility(View.GONE);
         findViewById(R.id.card_test_connection).setVisibility(View.GONE);
+        findViewById(R.id.customer_feedback_card).setVisibility(View.GONE);
     }
 
     private void showBossUserMaterialCards () {
@@ -90,11 +92,13 @@ public class HomeActivity extends AppCompatActivity implements ShowToastFromBgTh
         findViewById(R.id.card_manage_employees).setVisibility(View.VISIBLE);
         findViewById(R.id.card_manage_products).setVisibility(View.VISIBLE);
         findViewById(R.id.card_admin_dashboard).setVisibility(View.VISIBLE);
+        findViewById(R.id.customer_feedback_card).setVisibility(View.VISIBLE);
     }
 
     private void showManagerUserMaterialCards () {
         showForAllMaterialCards();
         findViewById(R.id.card_admin_dashboard).setVisibility(View.VISIBLE);
+        findViewById(R.id.customer_feedback_card).setVisibility(View.VISIBLE);
     }
 
     private void showEmployeeUserMaterialCards () {
@@ -108,6 +112,7 @@ public class HomeActivity extends AppCompatActivity implements ShowToastFromBgTh
         setManageOrdersListener();
         setAdminDashboardListener();
         setProfileListener();
+        setCustomerFeedbackListener();
         setTestConnectionListener();
     }
 
@@ -115,6 +120,7 @@ public class HomeActivity extends AppCompatActivity implements ShowToastFromBgTh
         setManageOrdersListener();
         setAdminDashboardListener();
         setProfileListener();
+        setCustomerFeedbackListener();
         setTestConnectionListener();
     }
 
@@ -160,6 +166,11 @@ public class HomeActivity extends AppCompatActivity implements ShowToastFromBgTh
         card.setOnClickListener(v -> profileClicked());
     }
 
+    private void setCustomerFeedbackListener() {
+        MaterialCardView card = findViewById(R.id.customer_feedback_card);
+        card.setOnClickListener(v -> customerFeedbackClicked());
+    }
+
     private void setTestConnectionListener() {
         MaterialCardView card = findViewById(R.id.card_test_connection);
         card.setOnClickListener(v -> testConnectionClicked());
@@ -192,6 +203,12 @@ public class HomeActivity extends AppCompatActivity implements ShowToastFromBgTh
 
     private void profileClicked() {
         Intent intent = new Intent(this, MyProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void customerFeedbackClicked() {
+        Intent intent = new Intent(this, CustomerFeedbackActivity.class);
+        intent.putExtra("userRole", employeeRole());
         startActivity(intent);
     }
 

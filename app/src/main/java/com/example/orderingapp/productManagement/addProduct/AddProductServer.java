@@ -32,14 +32,17 @@ public class AddProductServer implements ClientAuth {
 
     private void serverCall(AddProductActivity activity, Product product, List<Uri> imageUris)
     {
-        if (!authorize(activity))
+        if (!authorize(activity)) {
+            remakeUI(activity);
             return;
+        }
 
         HttpServerConnection connection = new HttpServerConnection();
         String basicCredentials = connection.getHttpBasicCredentials(activity);
 
         if (basicCredentials == null) {
             activity.showToast("User credentials not found");
+            remakeUI(activity);
             return;
         }
 
@@ -58,6 +61,7 @@ public class AddProductServer implements ClientAuth {
 
             if (imgResponse == null || imgResponse.getData() == null) {
                 activity.showToast("Failed to upload an image to ImgBB");
+                remakeUI(activity);
                 return false;
             }
             populateProductURLs(product, imgResponse.getData());
@@ -90,6 +94,13 @@ public class AddProductServer implements ClientAuth {
         } else {
             activity.showToast("An error occurred while saving the product");
         }
+        remakeUI(activity);
+    }
+
+    private void remakeUI (AddProductActivity activity) {
+        activity.setLoadingToInvisible();
+        activity.setDeleteButtonEnabled();
+        activity.setSubmitButtonEnabled();
     }
 
     @Override

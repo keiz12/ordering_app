@@ -390,8 +390,8 @@ public class MadeOrdersActivity extends AppCompatActivity implements ClientAuth,
 
     private void setEmployee() {
 
-//        if (staffProcessedOrder == null)
-//            return;
+        if (staffProcessedOrder == null)
+            return;
 
         findViewById(R.id.staff_order_metadata).setVisibility(View.VISIBLE);
 

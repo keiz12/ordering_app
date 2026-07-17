@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -80,6 +81,9 @@ public class AddProductActivity extends AppCompatActivity implements ShowToastFr
     private void setHeader() {
         TextView textView = findViewById( R.id.header_title_textview);
         textView.setText("Add New Product");
+
+        ImageButton imageButton = findViewById(R.id.btn_header_back);
+        imageButton.setOnClickListener(l -> finish());
     }
 
     public void addProductImage()
@@ -124,6 +128,9 @@ public class AddProductActivity extends AppCompatActivity implements ShowToastFr
             return;
         }
 
+        setLoadingToVisible ();
+        setDeleteButtonDisabled();
+        setSubmitButtonDisabled();
         addedProduct.saveButtonClicked(this, getAddedProduct(productName, productPrice, productDescription));
     }
 
@@ -136,6 +143,42 @@ public class AddProductActivity extends AppCompatActivity implements ShowToastFr
         product.setDescription(productDescription);
 
         return product;
+    }
+
+    private void setLoadingToVisible () {
+        runOnUiThread(()-> {
+            findViewById(R.id.add_product_loading_textview).setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void setDeleteButtonDisabled () {
+        runOnUiThread(()-> {
+            findViewById(R.id.btn_delete_product).setEnabled(false);
+        });
+    }
+
+    private void setSubmitButtonDisabled () {
+        runOnUiThread(()-> {
+            findViewById(R.id.btn_save_product).setEnabled(false);
+        });
+    }
+
+    public void setLoadingToInvisible () {
+        runOnUiThread(() -> {
+            findViewById(R.id.add_product_loading_textview).setVisibility(View.GONE);
+        });
+    }
+
+    public void setDeleteButtonEnabled () {
+        runOnUiThread(()-> {
+            findViewById(R.id.btn_delete_product).setEnabled(true);
+        });
+    }
+
+    public void setSubmitButtonEnabled () {
+        runOnUiThread(()-> {
+            findViewById(R.id.btn_save_product).setEnabled(true);
+        });
     }
 
     public void showToast (String txt) {
