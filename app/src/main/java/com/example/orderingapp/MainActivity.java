@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements ShowToastFromBgTh
 
         super.onCreate(savedInstanceState);
 
-//        runApp();
+        runApp();
 
-        testingModeAppStartUp();
+//        testingModeAppStartUp();
 
 //        service.shutdown();
     }

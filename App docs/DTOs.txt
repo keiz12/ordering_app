@@ -37,9 +37,11 @@ USER
     "password": "Staff456@",
     "role": "STAFF"
   }
-"username": "Javan",
+{
+    "username": "Javan",
     "password": "java123",
     "role": "STAFF"
+}
 
 ]
 
@@ -335,6 +337,33 @@ android key
 --------------
 
 {
-    "key" : "911"
+    "key" : "emmy"
 }
 
+customer feedback
+-------------------
+[
+    {
+        "feedbackLocalDateTime": "17-07-2026",
+        "feeback": "Awesome black pipper",
+	"uuid": "1234...."
+    },
+    {
+        "feedbackLocalDateTime": "17-07-2026",
+        "feeback": "I love your juices",
+	"uuid": "1234...."
+
+    },
+    {
+        "feedbackLocalDateTime": "17-07-2026",
+        "feeback": "Great services from Staff Javan",
+	"uuid": "1234...."
+    }
+]
+customer feedback post
+----------------------------
+{
+   "apiKey": "emmy",
+   "feeback": "Awesome black pipper",
+   "uuid": "1234...."
+}

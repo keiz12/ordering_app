@@ -112,7 +112,9 @@ Customer Feedback
 
 http://localhost:8080/all/post/customer-feedback (POST)
 
-http://localhost:8081/secure/get/customer-feedback (GET)
+http://localhost:8081/secure/get/all/customer-feedback (GET)
+
+http://localhost:8081/secure/boss/customer-feedback/{uuid} (DELETE)
 
 
 /secure --> STAFF, MANAGER, BOSS
